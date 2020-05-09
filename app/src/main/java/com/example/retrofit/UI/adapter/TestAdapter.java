@@ -1,9 +1,9 @@
 package com.example.retrofit.UI.adapter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofit.R;
 import com.example.retrofit.UI.activity.CommunicateActivity;
-import com.example.retrofit.UI.activity.UIactivity;
 import com.example.retrofit.domain.FriendRespose;
 
 import java.util.List;
@@ -43,7 +42,10 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.InnerHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CommunicateActivity.class);
-                intent.putExtra("data", mData.get(position).getFriendId());
+
+                Bundle bundle=new Bundle();
+                bundle.putInt("data",  mData.get(position).getFriendId());
+                intent.putExtras(bundle);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

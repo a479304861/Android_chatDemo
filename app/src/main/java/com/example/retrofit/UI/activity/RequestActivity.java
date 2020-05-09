@@ -77,7 +77,7 @@ public class RequestActivity extends AppCompatActivity {
         retrofit = RetrofitManager.getRetrofit();
         api = retrofit.create(Api.class);
         if (myviewmodel.getIsLoad().getValue() == true) {
-            Intent intent = new Intent(this, UIactivity.class);
+            Intent intent = new Intent(this, UiActivity.class);
             startActivity(intent);
         }
     }
@@ -174,7 +174,7 @@ public class RequestActivity extends AppCompatActivity {
                             myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
                             myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
                             myviewmodel.getName().setValue(response.body().getData().get(0).getName());
-                            Intent intent = new Intent(view.getContext(), UIactivity.class);
+                            Intent intent = new Intent(view.getContext(), UiActivity.class);
                             startActivity(intent);
                         }
 
@@ -208,12 +208,13 @@ public class RequestActivity extends AppCompatActivity {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;
-                                myviewmodel.getName().setValue(response.body().getData().get(0).getName());
+                                myviewmodel.getId().setValue(response.body().getData().get(0).getId());
                                 myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
                                 myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
                                 myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
+                                myviewmodel.getCollectNum().setValue(response.body().getData().get(0).getCollectNum());
                                 myviewmodel.getName().setValue(response.body().getData().get(0).getName());
-                                Intent intent = new Intent(view.getContext(), UIactivity.class);
+                                Intent intent = new Intent(view.getContext(), UiActivity.class);
                                 startActivity(intent);
                             }
 

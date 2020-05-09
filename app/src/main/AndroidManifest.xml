@@ -18,7 +18,7 @@
 
         </activity>
         <activity android:name=".UI.activity.PicketActivity" />
-        <activity android:name=".UI.activity.UIactivity" />
+        <activity android:name=".UI.activity.UiActivity" />
         <activity android:name=".UI.activity.RequestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
