@@ -3,8 +3,6 @@ package com.example.retrofit.UI.activity;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +20,7 @@ import com.example.retrofit.R;
 import com.example.retrofit.domain.FriendRespose;
 import com.example.retrofit.utile.RetrofitManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -32,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class UIactivity extends AppCompatActivity {
+public class UiActivity extends AppCompatActivity {
 
     private static final String TAG ="UIactivity" ;
     private Api api;
@@ -58,7 +54,7 @@ public class UIactivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode== KeyEvent.KEYCODE_BACK){
             if((System.currentTimeMillis()-exitTime)>2000){
-                Toast.makeText(UIactivity.this,"Retry and Exit()",Toast.LENGTH_SHORT).show();
+                Toast.makeText(UiActivity.this,"Retry and Exit()",Toast.LENGTH_SHORT).show();
                 exitTime=System.currentTimeMillis();
             }else{
                 System.exit(0);
@@ -79,7 +75,7 @@ public class UIactivity extends AppCompatActivity {
         retrofit= RetrofitManager.getRetrofit();
         api=retrofit.create(Api.class);
         myviewModel=RequestActivity.getMyviewmodel();
-
+        System.out.println("myviewModel.getTransmitNum().getValue():"+myviewModel.getCollectNum().getValue());
         observe();
         getFriend();
     }

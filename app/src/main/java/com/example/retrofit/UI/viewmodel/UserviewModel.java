@@ -1,11 +1,7 @@
 package com.example.retrofit.UI.viewmodel;
 
-import android.widget.TextView;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.retrofit.UI.activity.UIactivity;
 
 public class UserviewModel extends ViewModel {
     private MutableLiveData<String> name;
@@ -17,7 +13,7 @@ public class UserviewModel extends ViewModel {
     private MutableLiveData<Boolean> isLoad;
 
 
-    public MutableLiveData<Integer> getid() {
+    public MutableLiveData<Integer> getId() {
         if (id == null) {
             id = new MutableLiveData<>();
             id.setValue(0);
