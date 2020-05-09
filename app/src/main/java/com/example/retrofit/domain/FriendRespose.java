@@ -37,11 +37,9 @@ public class FriendRespose {
         public void setFriendId(int friendId) {
             this.friendId = friendId;
         }
-
         public String getName() {
             return name;
         }
-
         public void setName(String name) {
             this.name = name;
         }

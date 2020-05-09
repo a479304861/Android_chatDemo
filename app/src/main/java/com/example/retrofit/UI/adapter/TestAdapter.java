@@ -38,11 +38,11 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.InnerHolder> {
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         System.out.println(mData.get(position));
         holder.setData(mData.get(position));
+        //进入好友页面
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CommunicateActivity.class);
-
                 Bundle bundle=new Bundle();
                 bundle.putInt("data",  mData.get(position).getFriendId());
                 intent.putExtras(bundle);
@@ -60,7 +60,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.InnerHolder> {
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {
-       private TextView friendName,friendId;
+        private TextView friendName,friendId;
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             friendName = itemView.findViewById(R.id.item_testview_name);
