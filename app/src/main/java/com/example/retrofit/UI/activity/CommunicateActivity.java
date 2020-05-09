@@ -13,14 +13,11 @@ import android.view.View;
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.adapter.MessageAdapter;
-import com.example.retrofit.UI.adapter.TestAdapter;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.domain.MessageRespose;
 import com.example.retrofit.utile.RetrofitManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;

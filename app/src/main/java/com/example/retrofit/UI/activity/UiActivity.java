@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
-import com.example.retrofit.UI.adapter.TestAdapter;
+import com.example.retrofit.UI.adapter.FriendAdapter;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.R;
 import com.example.retrofit.domain.FriendRespose;
@@ -87,7 +87,7 @@ public class UiActivity extends AppCompatActivity {
        friend.enqueue(new Callback<FriendRespose>() {
            @Override
            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
-                TestAdapter testAdapter = new TestAdapter( response.body().getData());
+                FriendAdapter testAdapter = new FriendAdapter( response.body().getData());
                 mRecyclerView.setAdapter(testAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
                 mRecyclerView.setLayoutManager(linearLayoutManager);
