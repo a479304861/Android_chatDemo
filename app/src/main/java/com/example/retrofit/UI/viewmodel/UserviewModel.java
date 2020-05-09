@@ -9,11 +9,21 @@ import com.example.retrofit.UI.activity.UIactivity;
 
 public class UserviewModel extends ViewModel {
     private MutableLiveData<String> name;
+    private MutableLiveData<Integer> id;
     private MutableLiveData<Integer> likeNum;
     private MutableLiveData<Integer> fansNum;
     private MutableLiveData<Integer> collectNum;
     private MutableLiveData<Integer> transmitNum;
     private MutableLiveData<Boolean> isLoad;
+
+
+    public MutableLiveData<Integer> getid() {
+        if (id == null) {
+            id = new MutableLiveData<>();
+            id.setValue(0);
+        }
+        return id;
+    }
 
     public MutableLiveData<Boolean> getIsLoad() {
         if (isLoad == null) {

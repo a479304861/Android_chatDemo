@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.FriendRespose;
+import com.example.retrofit.domain.MeassureRespose;
 import com.example.retrofit.domain.User;
 
 import java.util.Map;
@@ -46,6 +47,9 @@ public interface Api {
 
     @GET("/websocket/sendToUser")
     Call<BaseRespose>sendToUser(@QueryMap Map<String, Object> params);
+
+    @GET("/user/getMeasure")
+    Call<MeassureRespose>getMeasure(@QueryMap Map<String, Object> params);
 
 
 

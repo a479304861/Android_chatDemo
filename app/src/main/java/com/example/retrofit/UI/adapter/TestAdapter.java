@@ -43,8 +43,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.InnerHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CommunicateActivity.class);
-               holder.itemView.getContext().startActivity(intent);
-
+                intent.putExtra("data", mData.get(position).getFriendId());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
     }

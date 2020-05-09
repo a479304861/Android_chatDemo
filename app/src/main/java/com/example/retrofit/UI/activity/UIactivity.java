@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.UI.adapter.TestAdapter;
@@ -35,6 +37,8 @@ public class UIactivity extends AppCompatActivity {
     private static final String TAG ="UIactivity" ;
     private Api api;
     private  Retrofit retrofit;
+    private long exitTime;
+
     UserviewModel myviewModel;
     Bundle bundle;
     TextView mCollectNum,mLikeNum,mFansNum,mTransmit,mName;
@@ -47,6 +51,21 @@ public class UIactivity extends AppCompatActivity {
         setContentView(R.layout.activity_u_iactivity);
 
         init();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            if((System.currentTimeMillis()-exitTime)>2000){
+                Toast.makeText(UIactivity.this,"Retry and Exit()",Toast.LENGTH_SHORT).show();
+                exitTime=System.currentTimeMillis();
+            }else{
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
