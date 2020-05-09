@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UI.activity.CommunicateActivity"></activity>
+
+        <activity android:name=".UI.activity.CommunicateActivity">
+
+        </activity>
         <activity android:name=".UI.activity.PicketActivity" />
         <activity android:name=".UI.activity.UIactivity" />
         <activity android:name=".UI.activity.RequestActivity">
