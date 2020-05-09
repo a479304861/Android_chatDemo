@@ -18,6 +18,7 @@ public class MessageViewModel extends ViewModel {
         return mData;
     }
     public static void addDataBean(MessageRespose.DataBean dataBean){
+        System.out.println("加入一个dataBean");
         mData.getValue().add(dataBean);
     }
 

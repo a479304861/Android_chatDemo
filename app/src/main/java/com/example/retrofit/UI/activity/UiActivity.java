@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,9 +84,16 @@ public class UiActivity extends AppCompatActivity {
         System.out.println("myviewModel.getTransmitNum().getValue():"+myviewModel.getCollectNum().getValue());
         observe();
         getFriend();
+        mLikeNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myviewModel.addLikeNum();
+            }
+        });
+
     }
 
-   private  void getFriend(){
+    private  void getFriend(){
        Map<String,Object> params= new HashMap<>();
        params.put("id",17);
        Call<FriendRespose> friend = api.getFriend(params);

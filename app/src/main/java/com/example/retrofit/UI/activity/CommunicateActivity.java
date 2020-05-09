@@ -2,6 +2,7 @@ package com.example.retrofit.UI.activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +21,11 @@ import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.domain.MessageRespose;
 import com.example.retrofit.utile.RetrofitManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +41,7 @@ public class CommunicateActivity extends AppCompatActivity {
     private UserviewModel myviewmodel;
     private RecyclerView mRecyclerView;
     private static MessageViewModel messageViewModel;
-
+    private MessageAdapter messageAdapter;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class CommunicateActivity extends AppCompatActivity {
         myviewmodel = RequestActivity.getMyviewmodel();
         mRecyclerView=findViewById(R.id.CommunicateActivity_RecycleView);
         getMeasure(data);
-
+        observe();
 //        List<MessageRespose.DataBean> dataBeans = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
 //            MessageRespose.DataBean dataBean = new MessageRespose.DataBean();
@@ -78,12 +82,8 @@ public class CommunicateActivity extends AppCompatActivity {
         messuage.enqueue(new Callback<MessageRespose>() {
             @Override
             public void onResponse(Call<MessageRespose> call, Response<MessageRespose> response) {
-
                 MessageViewModel.getmData().setValue(response.body().getData());
-                MessageAdapter messageAdapter = new MessageAdapter(MessageViewModel.getmData().getValue());
-                mRecyclerView.setAdapter(messageAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
-                mRecyclerView.setLayoutManager(linearLayoutManager);
+
             }
 
             @Override
@@ -92,7 +92,28 @@ public class CommunicateActivity extends AppCompatActivity {
         });
     }
 
+    public void addMessage(View view){
+        List<MessageRespose.DataBean> list = MessageViewModel.getmData().getValue();
+        MessageRespose.DataBean dataBean = new MessageRespose.DataBean();
+        dataBean.setContent("1231231");
+        list.add(dataBean);
+        MessageViewModel.getmData().setValue(list);
+        System.out.println(MessageViewModel.getmData().getValue().toString());
+    }
     public  void  setBack(View view){
         this.finish();
+    }
+
+    public  void observe(){
+        MessageViewModel.getmData().observe(this, new Observer<List<MessageRespose.DataBean>>() {
+            @Override
+            public void onChanged(List<MessageRespose.DataBean> dataBeans) {
+                System.out.println("调用！！！！！");
+                messageAdapter = new MessageAdapter(dataBeans);
+                mRecyclerView.setAdapter(messageAdapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
+                mRecyclerView.setLayoutManager(linearLayoutManager);
+            }
+        });
     }
 }

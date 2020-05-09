@@ -15,7 +15,14 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHolder> {
 
-    private final List<MessageRespose.DataBean> mData;
+    private  List<MessageRespose.DataBean> mData;
+
+    public List<MessageRespose.DataBean> getData() {
+        return mData;
+    }
+    public void setData(List<MessageRespose.DataBean> beans) {
+        this.mData=beans;
+    }
 
     public MessageAdapter(List<MessageRespose.DataBean> data){
         this.mData=data;
