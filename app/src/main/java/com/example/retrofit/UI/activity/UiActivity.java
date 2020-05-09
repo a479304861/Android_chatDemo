@@ -3,6 +3,7 @@ package com.example.retrofit.UI.activity;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.UI.adapter.FriendAdapter;
+import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.R;
 import com.example.retrofit.domain.FriendRespose;
@@ -39,13 +41,14 @@ public class UiActivity extends AppCompatActivity {
     Bundle bundle;
     TextView mCollectNum,mLikeNum,mFansNum,mTransmit,mName;
     RecyclerView mRecyclerView;
+    private static FriendViewModel friendViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_u_iactivity);
-
+        friendViewModel= new ViewModelProvider(this).get(FriendViewModel.class);
         init();
     }
 
@@ -66,6 +69,8 @@ public class UiActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void  init(){
+
+
         mCollectNum = findViewById(R.id.textViewCollect);
         mLikeNum = findViewById(R.id.textView_Like);
         mFansNum = findViewById(R.id.textViewFans);
@@ -87,7 +92,8 @@ public class UiActivity extends AppCompatActivity {
        friend.enqueue(new Callback<FriendRespose>() {
            @Override
            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
-                FriendAdapter testAdapter = new FriendAdapter( response.body().getData());
+                FriendViewModel.getmData().setValue(response.body().getData());
+                FriendAdapter testAdapter = new FriendAdapter(FriendViewModel.getmData().getValue());
                 mRecyclerView.setAdapter(testAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
                 mRecyclerView.setLayoutManager(linearLayoutManager);

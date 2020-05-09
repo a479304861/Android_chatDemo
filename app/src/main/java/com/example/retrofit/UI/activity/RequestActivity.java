@@ -252,43 +252,23 @@ public class RequestActivity extends AppCompatActivity {
         }
         client.send("测试数据！");
         Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
-//        client.close();
-        Map<String, Object> params = new HashMap<>();
-        params.put("username", "123");
-        params.put("password", "1");
-        Call<BaseRespose> hello = api.WebSocketlogin(params);
-        hello.enqueue(new Callback<BaseRespose>() {
-            @Override
-            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
-                Log.d(TAG, response.body().toString());
-//                Log.d(TAG, "！！！！！！！！！！！！！！！！！1 ");
-            }
 
-            @Override
-            public void onFailure(Call<BaseRespose> call, Throwable t) {
-
-            }
-        });
-
-        Map<String, Object> params2 = new HashMap<>();
-        params2.put("info", "123");
-        Call<BaseRespose> baseResposeCall = api.broadcast(params2);
-        baseResposeCall.enqueue(new Callback<BaseRespose>() {
-            @Override
-            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
-                Log.d(TAG, "!!!!!!!!!!");
-            }
-
-            @Override
-            public void onFailure(Call<BaseRespose> call, Throwable t) {
-
-            }
-        });
 
     }
 
-    public void hello() {
+    public void brocast(View view){
+        Map<String, Object> params = new HashMap<>();
+        params.put("info", "123");
+        Call<BaseRespose> broadcast = api.broadcast(params);
+        broadcast.enqueue(new Callback<BaseRespose>() {
+            @Override
+            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+            }
+            @Override
+            public void onFailure(Call<BaseRespose> call, Throwable t) {
 
+            }
+        });
     }
 
 

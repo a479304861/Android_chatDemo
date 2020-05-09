@@ -2,6 +2,7 @@ package com.example.retrofit.UI.activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,8 @@ import android.view.View;
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.adapter.MessageAdapter;
+import com.example.retrofit.UI.viewmodel.FriendViewModel;
+import com.example.retrofit.UI.viewmodel.MessageViewModel;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.domain.MessageRespose;
 import com.example.retrofit.utile.RetrofitManager;
@@ -33,13 +36,14 @@ public class CommunicateActivity extends AppCompatActivity {
     private Api api;
     private UserviewModel myviewmodel;
     private RecyclerView mRecyclerView;
+    private static MessageViewModel messageViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communicate);
-
+        messageViewModel= new ViewModelProvider(this).get(MessageViewModel.class);
             init();
     }
 
@@ -75,8 +79,8 @@ public class CommunicateActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageRespose> call, Response<MessageRespose> response) {
 
-//                System.out.println(response.body().getData().toString());
-                MessageAdapter messageAdapter = new MessageAdapter(response.body().getData());
+                MessageViewModel.getmData().setValue(response.body().getData());
+                MessageAdapter messageAdapter = new MessageAdapter(MessageViewModel.getmData().getValue());
                 mRecyclerView.setAdapter(messageAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
                 mRecyclerView.setLayoutManager(linearLayoutManager);

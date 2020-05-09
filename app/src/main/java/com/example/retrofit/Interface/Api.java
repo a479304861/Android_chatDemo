@@ -41,7 +41,7 @@ public interface Api {
 
     @GET("/websocket/sendToUser")
     Call<BaseRespose>sendToUser(@QueryMap Map<String, Object> params);
-
+//获得消息记录
     @GET("/user/getMessage")
     Call<MessageRespose>getMessage(@QueryMap Map<String, Object> params);
 
