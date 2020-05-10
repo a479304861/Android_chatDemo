@@ -9,6 +9,7 @@ import java.util.List;
 
 public class FriendViewModel extends ViewModel {
     private static MutableLiveData<List<FriendRespose.DataBean>> mData;
+    private static MutableLiveData<Boolean> isUpdate;
     public static MutableLiveData<List<FriendRespose.DataBean>> getmData() {
         if (mData == null) {
             mData = new MutableLiveData<>();
@@ -16,7 +17,12 @@ public class FriendViewModel extends ViewModel {
         }
         return mData;
     }
-    public static void addDataBean(FriendRespose.DataBean dataBean){
-        mData.getValue().add(dataBean);
+    public static MutableLiveData<Boolean> getisUpdate() {
+        if (isUpdate == null) {
+            isUpdate = new MutableLiveData<>();
+            isUpdate.setValue(false);
+        }
+        return isUpdate;
     }
+
 }

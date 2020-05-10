@@ -83,7 +83,6 @@ public class CommunicateActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageRespose> call, Response<MessageRespose> response) {
                 MessageViewModel.getmData().setValue(response.body().getData());
-
             }
 
             @Override
@@ -108,7 +107,7 @@ public class CommunicateActivity extends AppCompatActivity {
         MessageViewModel.getmData().observe(this, new Observer<List<MessageRespose.DataBean>>() {
             @Override
             public void onChanged(List<MessageRespose.DataBean> dataBeans) {
-                System.out.println("调用！！！！！");
+                System.out.println("调!!!!!!!!!!!!!!!!!!!!!!!");
                 messageAdapter = new MessageAdapter(dataBeans);
                 mRecyclerView.setAdapter(messageAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
