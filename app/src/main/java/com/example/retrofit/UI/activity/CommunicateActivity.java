@@ -104,6 +104,7 @@ public class CommunicateActivity extends AppCompatActivity {
     }
 
     public  void observe(){
+
         MessageViewModel.getmData().observe(this, new Observer<List<MessageRespose.DataBean>>() {
             @Override
             public void onChanged(List<MessageRespose.DataBean> dataBeans) {

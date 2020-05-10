@@ -56,10 +56,12 @@ public class RequestActivity extends AppCompatActivity {
     private Api api;
     private Retrofit retrofit;
     private static UserviewModel myviewmodel;
+    private static WebSocketTest client;
 
     public static UserviewModel getMyviewmodel() {
         return myviewmodel;
     }
+    public static WebSocketTest getWebSocketTest(){return client;}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,6 +210,13 @@ public class RequestActivity extends AppCompatActivity {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;
+                                try {
+                                    WebSocketTest();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
                                 myviewmodel.getId().setValue(response.body().getData().get(0).getId());
                                 myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
                                 myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
@@ -243,8 +252,8 @@ public class RequestActivity extends AppCompatActivity {
 //        api.postFile(part);
     }
 
-    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException {
-        WebSocketTest client = new WebSocketTest("ws://10.0.2.2:8080/websocket/server");
+    public void WebSocketTest() throws InterruptedException, URISyntaxException {
+        client = new WebSocketTest("ws://10.0.2.2:8080/websocket/server");
         client.connect();
         while (client.getReadyState() != ReadyState.OPEN) {
             System.out.println("连接状态：" + client.getReadyState());

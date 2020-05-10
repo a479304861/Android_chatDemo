@@ -10,6 +10,7 @@ import java.util.List;
 public class FriendViewModel extends ViewModel {
     private static MutableLiveData<List<FriendRespose.DataBean>> mData;
     private static MutableLiveData<Boolean> isUpdate;
+
     public static MutableLiveData<List<FriendRespose.DataBean>> getmData() {
         if (mData == null) {
             mData = new MutableLiveData<>();
