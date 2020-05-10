@@ -29,6 +29,7 @@ public class WebSocketTest extends WebSocketClient {
         Gson gson = new Gson();
         ReceiveMessage message1=gson.fromJson(message,ReceiveMessage.class);
         System.out.println(message1.toString());
+
         if (message1.getCode()==100) {
             System.out.println("receiveBreast!!!!!!!!!!!!");
             DataManagerObserve instance = DataManagerObserve.getInstance();

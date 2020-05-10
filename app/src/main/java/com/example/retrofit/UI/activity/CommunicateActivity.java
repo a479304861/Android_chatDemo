@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.R;
@@ -19,6 +20,7 @@ import com.example.retrofit.UI.adapter.MessageData;
 import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.UI.viewmodel.MessageViewModel;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
+import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.MessageRespose;
 import com.example.retrofit.utile.RetrofitManager;
 
@@ -42,6 +44,7 @@ public class CommunicateActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private static MessageViewModel messageViewModel;
     private MessageAdapter messageAdapter;
+    private TextView mTextView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -61,6 +64,7 @@ public class CommunicateActivity extends AppCompatActivity {
         api = retrofit.create(Api.class);
         myviewmodel = RequestActivity.getMyviewmodel();
         mRecyclerView = findViewById(R.id.CommunicateActivity_RecycleView);
+        mTextView=findViewById(R.id.activity_communicate_editText);
         getMeasure(data);
         observe();
 //        List<MessageRespose.DataBean> dataBeans = new ArrayList<>();
@@ -92,13 +96,30 @@ public class CommunicateActivity extends AppCompatActivity {
         });
     }
 
-    public void addMessage(View view) {
-        List<MessageRespose.DataBean> list = MessageViewModel.getmData().getValue();
-        MessageRespose.DataBean dataBean = new MessageRespose.DataBean();
-        dataBean.setContent("1231231");
-        list.add(dataBean);
-        MessageViewModel.getmData().setValue(list);
-        System.out.println(MessageViewModel.getmData().getValue().toString());
+    public void sentToOther(View view) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", String.valueOf(myviewmodel.getName().getValue()));
+        params.put("info", mTextView.getText().toString());
+        Call<BaseRespose> sendToUser = api.sendToUser(params);
+        sendToUser.enqueue(new Callback<BaseRespose>() {
+            @Override
+            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseRespose> call, Throwable t) {
+
+            }
+        });
+
+//        List<MessageRespose.DataBean> list = MessageViewModel.getmData().getValue();
+//        MessageRespose.DataBean dataBean = new MessageRespose.DataBean();
+//
+//        dataBean.setContent("1231231");
+//        list.add(dataBean);
+//        MessageViewModel.getmData().setValue(list);
+//        System.out.println(MessageViewModel.getmData().getValue().toString());
     }
 
     public void setBack(View view) {

@@ -45,6 +45,11 @@ public interface Api {
     @GET("/user/getMessage")
     Call<MessageRespose>getMessage(@QueryMap Map<String, Object> params);
 
+    @GET("/websocket/server")
+    Call<MessageRespose> test();
+
+
+
 
 
 //    @POST

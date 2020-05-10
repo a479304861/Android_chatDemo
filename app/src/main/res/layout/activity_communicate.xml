@@ -45,7 +45,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/activity_communicate_editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:onClick="addMessage"
+            android:onClick="sentToOther"
             android:text="发送" />
     </LinearLayout>
 

@@ -22,6 +22,7 @@ import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.User;
 import com.example.retrofit.socket.SocketTest;
+import com.example.retrofit.socketClient.SocketClient;
 import com.example.retrofit.utile.RetrofitManager;
 import com.example.retrofit.utile.StaticUtils;
 import com.example.retrofit.webSocket.WebSocketTest;
@@ -35,6 +36,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -210,19 +213,20 @@ public class RequestActivity extends AppCompatActivity {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;
-                                try {
-                                    WebSocketTest();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (URISyntaxException e) {
-                                    e.printStackTrace();
-                                }
+
                                 myviewmodel.getId().setValue(response.body().getData().get(0).getId());
                                 myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
                                 myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
                                 myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
                                 myviewmodel.getCollectNum().setValue(response.body().getData().get(0).getCollectNum());
                                 myviewmodel.getName().setValue(response.body().getData().get(0).getName());
+                                try {
+                                    WebSocketTest(view);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
                                 Intent intent = new Intent(view.getContext(), UiActivity.class);
                                 startActivity(intent);
                             }
@@ -252,17 +256,35 @@ public class RequestActivity extends AppCompatActivity {
 //        api.postFile(part);
     }
 
-    public void WebSocketTest() throws InterruptedException, URISyntaxException {
-        client = new WebSocketTest("ws://10.0.2.2:8080/websocket/server");
-        client.connect();
-        while (client.getReadyState() != ReadyState.OPEN) {
-            System.out.println("连接状态：" + client.getReadyState());
-            Thread.sleep(100);
-        }
-        client.send("测试数据！");
-        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
+    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException {
+        SocketClient.main();
 
 
+
+        //
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("username",myviewmodel.getName().getValue());
+//        Call<BaseRespose> baseResposeCall = api.WebSocketlogin(params);
+//        baseResposeCall.enqueue(new Callback<BaseRespose>() {
+//            @Override
+//            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseRespose> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        client = new WebSocketTest("ws://10.0.2.2:8080/sockjs/server");
+//        client.connect();
+//        while (client.getReadyState() != ReadyState.OPEN) {
+//            System.out.println("连接状态：" + client.getReadyState());
+//            Thread.sleep(100);
+//        }
+//        client.send("测试数据！");
+//        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
     }
 
     public void brocast(View view){
@@ -275,7 +297,6 @@ public class RequestActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<BaseRespose> call, Throwable t) {
-
             }
         });
     }
