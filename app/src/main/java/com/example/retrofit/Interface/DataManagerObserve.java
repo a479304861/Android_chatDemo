@@ -1,10 +1,8 @@
 package com.example.retrofit.Interface;
 
-import java.util.HashMap;
+public class DataManagerObserve extends  AbstractSubject{
 
-public class DataManager extends  AbstractSubject{
-
-    private static volatile DataManager INSTANCE;
+    private static volatile DataManagerObserve INSTANCE;
     private boolean isHavingUpdate;
     public boolean getIsHavingUpdate() {
         return isHavingUpdate;
@@ -13,33 +11,26 @@ public class DataManager extends  AbstractSubject{
     public void setHavingUpdate(boolean havingUpdate) {
         isHavingUpdate = havingUpdate;
     }
-
-    private DataManager() {
+    private DataManagerObserve() {
     }
-
-    public static DataManager getInstance() {
+    public static DataManagerObserve getInstance() {
         if (INSTANCE == null) {
-            synchronized (DataManager.class) {
+            synchronized (DataManagerObserve.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DataManager();
+                    INSTANCE = new DataManagerObserve();
                 }
             }
         }
         return INSTANCE;
     }
-
-
     @Override
     public void operation() {
         System.out.println("isHavingUpdate——————>" + isHavingUpdate);
         notifyAllUpdateListener(isHavingUpdate);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-
     }
 }

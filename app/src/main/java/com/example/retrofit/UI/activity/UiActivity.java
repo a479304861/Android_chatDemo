@@ -16,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
-import com.example.retrofit.Interface.DataManager;
+import com.example.retrofit.Interface.DataManagerObserve;
 import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.UI.adapter.FriendAdapter;
-import com.example.retrofit.UI.adapter.MessageAdapter;
 import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.R;
@@ -119,7 +118,7 @@ public class UiActivity extends AppCompatActivity {
    }
 
     private void observe(){
-        DataManager instance = DataManager.getInstance();
+        DataManagerObserve instance = DataManagerObserve.getInstance();
         instance.addUpdateListener(new UpdateListener() {
             @Override
             public void update(boolean b) {

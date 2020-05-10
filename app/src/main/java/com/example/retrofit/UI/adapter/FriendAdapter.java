@@ -30,6 +30,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view=View.inflate(parent.getContext(), R.layout.item_friend,null);
         return new InnerHolder(view);
     }
@@ -67,7 +68,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
             friendId =itemView.findViewById(R.id.item_testview_id);
             isOnline=itemView.findViewById(R.id.item_friend_isOnline);
         }
-
         //
         public void setData(FriendRespose.DataBean dataBean) {
             if (dataBean.isOnline()==true) {

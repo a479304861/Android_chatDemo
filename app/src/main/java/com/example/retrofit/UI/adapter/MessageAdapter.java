@@ -9,22 +9,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.retrofit.R;
-import com.example.retrofit.domain.MessageRespose;
 
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHolder> {
 
-    private  List<MessageRespose.DataBean> mData;
+    private  List<MessageData.DataBean> mData;
 
-    public List<MessageRespose.DataBean> getData() {
+
+    public List<MessageData.DataBean> getData() {
         return mData;
     }
-    public void setData(List<MessageRespose.DataBean> beans) {
+    public void setData(List<MessageData.DataBean> beans) {
         this.mData=beans;
     }
 
-    public MessageAdapter(List<MessageRespose.DataBean> data){
+    public MessageAdapter(List<MessageData.DataBean> data){
         this.mData=data;
         System.out.println(mData);
     }
@@ -52,14 +52,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHol
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {
-        private TextView mTextView;
+        private TextView mTextViewLeft,mTextViewRight;
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
-            mTextView=itemView.findViewById(R.id.item_message_textView);
+            mTextViewLeft =itemView.findViewById(R.id.item_message_textView);
+            mTextViewRight =itemView.findViewById(R.id.item_message_textView_right);
         }
 
-        public void setData(MessageRespose.DataBean dataBean) {
-            mTextView.setText(dataBean.getContent());
+        public void setData(MessageData.DataBean dataBean) {
+            if (dataBean.getIsUser()) {
+                System.out.println("right");
+                mTextViewLeft.setText("");
+                mTextViewRight.setText(dataBean.getContent());
+            }
+            else {
+                mTextViewRight.setText("");
+                mTextViewLeft.setText(dataBean.getContent());
+            }
+
 
         }
     }

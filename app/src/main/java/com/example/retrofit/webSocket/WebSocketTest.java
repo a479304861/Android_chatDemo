@@ -1,8 +1,7 @@
 package com.example.retrofit.webSocket;
 
-import com.example.retrofit.Interface.DataManager;
+import com.example.retrofit.Interface.DataManagerObserve;
 import com.example.retrofit.Interface.UpdateListener;
-import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.domain.ReceiveMessage;
 import com.google.gson.Gson;
 
@@ -32,7 +31,7 @@ public class WebSocketTest extends WebSocketClient {
         System.out.println(message1.toString());
         if (message1.getCode()==100) {
             System.out.println("receiveBreast!!!!!!!!!!!!");
-            DataManager instance = DataManager.getInstance();
+            DataManagerObserve instance = DataManagerObserve.getInstance();
             instance.setHavingUpdate(true);
             instance.addUpdateListener(new UpdateListener() {
                 @Override
