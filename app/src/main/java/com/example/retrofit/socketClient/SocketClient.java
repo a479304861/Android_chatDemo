@@ -23,8 +23,9 @@ import io.socket.emitter.Emitter;
 
 public class SocketClient {
     private static Socket socket;
-
-
+    public static Socket getSocket(){
+        return socket;
+    }
         public static void main() throws URISyntaxException {
             IO.Options options = new IO.Options();
             options.transports = new String[]{"websocket"};
@@ -38,9 +39,12 @@ public class SocketClient {
                 @Override
                 public void call(Object... args) {
                     // 客户端一旦连接成功，开始发起登录请求
-                    Map<Object, Object> message = new HashMap<>();
+                    Map<String , Object> message = new HashMap<>();
                     message.put("name","123");
-                    socket.emit("login", message, (Ack) args1 -> {
+                    message.put("password","456");
+
+                    System.out.println(message.toString());
+                    socket.emit("login",message, (Ack) args1 -> {
 //                        logger.info("回执消息=" + Arrays.stream(args1).map(Object::toString).collect(Collectors.joining(",")));
                     });
                 }
@@ -48,7 +52,6 @@ public class SocketClient {
                 @Override
                 public void call(Object... args) {
                     System.out.println(args.toString());
-
                 }
 //            }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
 ////                @Override
@@ -148,5 +151,4 @@ public class SocketClient {
 //        });
 //        socket.connect();
     }
-
 }

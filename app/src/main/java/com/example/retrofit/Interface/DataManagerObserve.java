@@ -4,8 +4,18 @@ public class DataManagerObserve extends  AbstractSubject{
 
     private static volatile DataManagerObserve INSTANCE;
     private boolean isHavingUpdate;
+    private boolean isHavingMessage;
+
+    public boolean getisHavingMessage() {
+        return isHavingMessage;
+    }
+
     public boolean getIsHavingUpdate() {
         return isHavingUpdate;
+    }
+
+    public void setHavingMessage(boolean havingMessage) {
+        isHavingMessage = havingMessage;
     }
 
     public void setHavingUpdate(boolean havingUpdate) {
@@ -26,9 +36,11 @@ public class DataManagerObserve extends  AbstractSubject{
     @Override
     public void operation() {
         System.out.println("isHavingUpdate——————>" + isHavingUpdate);
+        System.out.println("isHavingUpdate——————>" + isHavingMessage);
         notifyAllUpdateListener(isHavingUpdate);
+        notifyAllUpdateListener(isHavingMessage);
         try {
-            Thread.sleep(500);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

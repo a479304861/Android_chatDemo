@@ -123,13 +123,13 @@ public class UiActivity extends AppCompatActivity {
             @Override
             public void update(boolean b) {
                 if (instance.getIsHavingUpdate()==true) {
-                    System.out.println("监receive!!!!!!" );
                     instance.setHavingUpdate(false);
                     getFriend();
                 }
             }
         });
         instance.operation();
+
         myviewModel.getName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {

@@ -257,11 +257,7 @@ public class RequestActivity extends AppCompatActivity {
     }
 
     public void WebSocketTest(View view) throws InterruptedException, URISyntaxException {
-        SocketClient.main();
-
-
-
-        //
+//        SocketClient.main();
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("username",myviewmodel.getName().getValue());
 //        Call<BaseRespose> baseResposeCall = api.WebSocketlogin(params);
@@ -276,15 +272,15 @@ public class RequestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-//
-//        client = new WebSocketTest("ws://10.0.2.2:8080/sockjs/server");
-//        client.connect();
-//        while (client.getReadyState() != ReadyState.OPEN) {
-//            System.out.println("连接状态：" + client.getReadyState());
-//            Thread.sleep(100);
-//        }
-//        client.send("测试数据！");
-//        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
+
+        client = new WebSocketTest(StaticUtils.WEB_SOCKET_URL);
+        client.connect();
+        while (client.getReadyState() != ReadyState.OPEN) {
+            System.out.println("连接状态：" + client.getReadyState());
+            Thread.sleep(100);
+        }
+        client.send("测试数据！");
+        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
     }
 
     public void brocast(View view){

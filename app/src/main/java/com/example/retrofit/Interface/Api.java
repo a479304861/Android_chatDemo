@@ -39,7 +39,7 @@ public interface Api {
     @GET("/websocket/login")
     Call<BaseRespose> WebSocketlogin(@QueryMap Map<String, Object> params);
 
-    @GET("/websocket/sendToUser")
+    @GET("/sendToUser")
     Call<BaseRespose>sendToUser(@QueryMap Map<String, Object> params);
 //获得消息记录
     @GET("/user/getMessage")

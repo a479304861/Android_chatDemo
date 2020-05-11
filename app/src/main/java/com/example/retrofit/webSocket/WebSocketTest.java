@@ -34,6 +34,8 @@ public class WebSocketTest extends WebSocketClient {
             System.out.println("receiveBreast!!!!!!!!!!!!");
             DataManagerObserve instance = DataManagerObserve.getInstance();
             instance.setHavingUpdate(true);
+            instance.setHavingMessage(true);
+
             instance.addUpdateListener(new UpdateListener() {
                 @Override
                 public void update(boolean b) {
