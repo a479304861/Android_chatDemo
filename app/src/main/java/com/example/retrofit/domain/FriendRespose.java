@@ -5,6 +5,7 @@ import java.util.List;
 
 public class FriendRespose {
     private boolean succeed;
+
     private List<DataBean> data;
 
     public FriendRespose() {
@@ -13,9 +14,30 @@ public class FriendRespose {
     }
 
 
+
+    public boolean getSucceed() {
+        return succeed;
+    }
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
+    }
+    public List<DataBean> getData() {
+        return data;
+    }
+    public void addData(DataBean dataBean) {
+        data.add(dataBean);
+    }
+
+
+
     public static class DataBean{
         private int friendId;
-        private boolean isOnline;
+        private String isOnline;
+        private String name;
+
+        public DataBean() {
+            isOnline="1";
+        }
 
         @Override
         public String toString() {
@@ -26,15 +48,14 @@ public class FriendRespose {
                     '}';
         }
 
-        public boolean isOnline() {
+        public String getIsOnline() {
             return isOnline;
         }
 
-        public void setOnline(boolean online) {
-            isOnline = online;
+        public void setIsOnline(String isOnline) {
+            this.isOnline = isOnline;
         }
 
-        private String name;
         public int getFriendId() {
             return friendId;
         }
@@ -47,17 +68,5 @@ public class FriendRespose {
         public void setName(String name) {
             this.name = name;
         }
-    }
-    public boolean getSucceed() {
-        return succeed;
-    }
-    public void setSucceed(boolean succeed) {
-        this.succeed = succeed;
-    }
-    public List<DataBean> getData() {
-        return data;
-    }
-    public void addData(DataBean dataBean) {
-        data.add(dataBean);
     }
 }

@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.R;
-import com.example.retrofit.UI.viewmodel.UserviewModel;
+import com.example.retrofit.UI.viewmodel.UserViewModel;
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.User;
 import com.example.retrofit.socket.SocketTest;
@@ -27,7 +27,6 @@ import com.example.retrofit.utile.RetrofitManager;
 import com.example.retrofit.utile.StaticUtils;
 import com.example.retrofit.webSocket.WebSocketTest;
 
-import org.java_websocket.enums.ReadyState;
 import org.json.JSONException;
 
 import java.io.File;
@@ -37,8 +36,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -59,10 +56,10 @@ public class RequestActivity extends AppCompatActivity {
     private EditText mEditTextName, mEditTextPassword;
     private Api api;
     private Retrofit retrofit;
-    private static UserviewModel myviewmodel;
+    private static UserViewModel myviewmodel;
     private static WebSocketTest client;
 
-    public static UserviewModel getMyviewmodel() {
+    public static UserViewModel getMyviewmodel() {
         return myviewmodel;
     }
     public static WebSocketTest getWebSocketTest(){return client;}
@@ -74,7 +71,7 @@ public class RequestActivity extends AppCompatActivity {
         mExecutorService = Executors.newCachedThreadPool();
         mEditTextName = findViewById(R.id.editTextName);
         mEditTextPassword = findViewById(R.id.editTextPassword);
-        myviewmodel = new ViewModelProvider(this).get(UserviewModel.class);
+        myviewmodel = new ViewModelProvider(this).get(UserViewModel.class);
         checkPermission();
         init();
     }
@@ -198,7 +195,7 @@ public class RequestActivity extends AppCompatActivity {
 
     public void login(View view) {
         isConneting = true;
-        if (isConneting == true) {
+        if (isConneting) {
             Retrofit retrofit = RetrofitManager.getRetrofit();
             Api api = retrofit.create(Api.class);
             Map<String, Object> params = new HashMap<>();
@@ -223,11 +220,7 @@ public class RequestActivity extends AppCompatActivity {
                                 myviewmodel.getName().setValue(response.body().getData().get(0).getName());
                                 try {
                                     WebSocketTest(view);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
                                 } catch (URISyntaxException e) {
-                                    e.printStackTrace();
-                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                                 Intent intent = new Intent(view.getContext(), UiActivity.class);
@@ -259,7 +252,7 @@ public class RequestActivity extends AppCompatActivity {
 //        api.postFile(part);
     }
 
-    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException, JSONException {
+    public void WebSocketTest(View view) throws  URISyntaxException {
         SocketClient.main();
 
 
@@ -306,12 +299,7 @@ public class RequestActivity extends AppCompatActivity {
     }
 
 
-//    public void sendReq(Action action, Object req, ICallback callback) {
-//        sendReq(action, req, callback, StaticUtils.REQUEST_TIMEOUT);
-//    }
-//    public void sendReq(Action action, Object req, ICallback callback, long timeout) {
-//        sendReq(action, req, callback, timeout);
-//    }
+
 
 
 }

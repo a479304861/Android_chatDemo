@@ -1,24 +1,14 @@
 package com.example.retrofit.socketClient;
 
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 
-import com.example.retrofit.domain.Params;
-import com.example.retrofit.domain.User;
+import com.example.retrofit.UI.viewmodel.UserViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import io.socket.client.Ack;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -41,14 +31,7 @@ public class SocketClient {
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    // 客户端一旦连接成功，开始发起登录请求
-//                    JSONObject obj = new JSONObject();
-//                    try {
-//                        obj.put("name", "zhangsan");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    socket.emit("login",obj);
+                    socket.emit("login", UserViewModel.getName().getValue());
                 }
             });
             socket.on("relogin", new Emitter.Listener() {
@@ -56,7 +39,7 @@ public class SocketClient {
                 public void call(Object... args) {
                     JSONObject obj = (JSONObject)args[0];
                     try {
-                        System.out.println(obj.get("name"));
+                        System.out.println("relogin-------------->"+obj.get("code"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -99,13 +82,19 @@ public class SocketClient {
 ////                }
             });
 
-
+            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    socket.emit("disconnect", UserViewModel.getName().getValue());
+                }
+            });
+            //心跳检测
             socket.on("broadcast", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     JSONObject obj = (JSONObject)args[0];
                     try {
-                        System.out.println(obj.getString("code"));
+//                        System.out.println(obj.getString("code"));
                         if (obj.getString("code").equals("100")){
                             socket.emit("answer","1000");
                         }

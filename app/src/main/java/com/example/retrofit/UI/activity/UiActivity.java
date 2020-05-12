@@ -4,7 +4,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +20,12 @@ import com.example.retrofit.Interface.DataManagerObserve;
 import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.UI.adapter.FriendAdapter;
 import com.example.retrofit.UI.viewmodel.FriendViewModel;
-import com.example.retrofit.UI.viewmodel.UserviewModel;
+import com.example.retrofit.UI.viewmodel.UserViewModel;
 import com.example.retrofit.R;
 import com.example.retrofit.domain.FriendRespose;
 import com.example.retrofit.utile.RetrofitManager;
 import com.example.retrofit.webSocket.WebSocketTest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +45,7 @@ public class UiActivity extends AppCompatActivity {
     private static WebSocketTest client;
 
 
-    UserviewModel myviewModel;
+    UserViewModel myviewModel;
     Bundle bundle;
     TextView mCollectNum,mLikeNum,mFansNum,mTransmit,mName;
     RecyclerView mRecyclerView;
@@ -109,7 +107,9 @@ public class UiActivity extends AppCompatActivity {
        friend.enqueue(new Callback<FriendRespose>() {
            @Override
            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
-                FriendViewModel.getmData().setValue(response.body().getData());
+               List<FriendRespose.DataBean> data = response.body().getData();
+               System.out.println("response.body().getData()----------->"+data.toString());
+               FriendViewModel.getmData().setValue(response.body().getData());
            }
            @Override
            public void onFailure(Call<FriendRespose> call, Throwable t) {
@@ -164,7 +164,7 @@ public class UiActivity extends AppCompatActivity {
         FriendViewModel.getmData().observe(this, new Observer<List<FriendRespose.DataBean>>() {
             @Override
             public void onChanged(List<FriendRespose.DataBean> dataBeans) {
-//                System.out.println("��!!!!!!!!!!!!!!!!!!!!!!!");
+
                 friendAdapter = new FriendAdapter(dataBeans);
                 mRecyclerView.setAdapter(friendAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());

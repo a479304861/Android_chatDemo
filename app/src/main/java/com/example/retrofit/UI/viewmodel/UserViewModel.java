@@ -3,17 +3,17 @@ package com.example.retrofit.UI.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class UserviewModel extends ViewModel {
-    private MutableLiveData<String> name;
-    private MutableLiveData<Integer> id;
-    private MutableLiveData<Integer> likeNum;
-    private MutableLiveData<Integer> fansNum;
-    private MutableLiveData<Integer> collectNum;
-    private MutableLiveData<Integer> transmitNum;
-    private MutableLiveData<Boolean> isLoad;
+public class UserViewModel extends ViewModel {
+    private static MutableLiveData<String> name;
+    private static MutableLiveData<Integer> id;
+    private static MutableLiveData<Integer> likeNum;
+    private static MutableLiveData<Integer> fansNum;
+    private static MutableLiveData<Integer> collectNum;
+    private static MutableLiveData<Integer> transmitNum;
+    private static MutableLiveData<Boolean> isLoad;
 
 
-    public MutableLiveData<Integer> getId() {
+    public static MutableLiveData<Integer> getId() {
         if (id == null) {
             id = new MutableLiveData<>();
             id.setValue(0);
@@ -21,7 +21,7 @@ public class UserviewModel extends ViewModel {
         return id;
     }
 
-    public MutableLiveData<Boolean> getIsLoad() {
+    public static MutableLiveData<Boolean> getIsLoad() {
         if (isLoad == null) {
             isLoad = new MutableLiveData<>();
             isLoad.setValue(false);
@@ -30,21 +30,23 @@ public class UserviewModel extends ViewModel {
     }
 
 
-    public UserviewModel() {
-        this.name = new MutableLiveData<>();
-        this.likeNum = new MutableLiveData<>();
-        this.fansNum = new MutableLiveData<>();
-        this.collectNum = new MutableLiveData<>();
-        this.transmitNum = new MutableLiveData<>();
+    public UserViewModel() {
+        name = new MutableLiveData<>();
+        likeNum = new MutableLiveData<>();
+        fansNum = new MutableLiveData<>();
+        collectNum = new MutableLiveData<>();
+        transmitNum = new MutableLiveData<>();
     }
 
 
-    public void addLikeNum(){
+    public static void addLikeNum(){
+        if (likeNum.getValue()!=null) {
         likeNum.setValue(likeNum.getValue()+1);
+        }
     }
 
 
-    public MutableLiveData<Integer>  getCollectNum() {
+    public static MutableLiveData<Integer>  getCollectNum() {
         if (collectNum == null) {
             collectNum = new MutableLiveData<>();
             collectNum.setValue(0);
@@ -52,28 +54,28 @@ public class UserviewModel extends ViewModel {
         return collectNum;
 
     }
-    public MutableLiveData<Integer> getLikeNum() {
+    public static MutableLiveData<Integer> getLikeNum() {
         if (likeNum == null) {
             likeNum = new MutableLiveData<>();
             likeNum.setValue(0);
         }
         return likeNum;
     }
-    public MutableLiveData<Integer> getTransmitNum() {
+    public static MutableLiveData<Integer> getTransmitNum() {
         if (transmitNum == null) {
             transmitNum = new MutableLiveData<>();
             transmitNum.setValue(0);
         }
         return transmitNum;
     }
-    public MutableLiveData<String> getName() {
+    public static MutableLiveData<String> getName() {
         if (name == null) {
             name = new MutableLiveData<>();
             name.setValue("123");
         }
         return name;
     }
-    public MutableLiveData<Integer> getFansNum() {
+    public static MutableLiveData<Integer> getFansNum() {
         if (fansNum == null) {
             fansNum = new MutableLiveData<>();
             fansNum.setValue(0);

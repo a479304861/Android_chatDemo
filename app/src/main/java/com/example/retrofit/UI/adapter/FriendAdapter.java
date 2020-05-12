@@ -61,7 +61,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
         return 0;
     }
 
-    public class InnerHolder extends RecyclerView.ViewHolder {
+    public static class InnerHolder extends RecyclerView.ViewHolder {
         private TextView friendName,friendId,isOnline;
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,7 +72,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
 
         //
         public void setData(FriendRespose.DataBean dataBean) {
-            if (dataBean.isOnline()==true) {
+            if (dataBean.getIsOnline().equals("1")) {
                 isOnline.setText("在线");
             }
             else isOnline.setText("离线请留言");

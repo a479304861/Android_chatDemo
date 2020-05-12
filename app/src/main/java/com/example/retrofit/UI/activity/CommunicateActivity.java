@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,21 +20,16 @@ import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.adapter.MessageAdapter;
 import com.example.retrofit.UI.adapter.MessageData;
-import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.UI.viewmodel.MessageViewModel;
-import com.example.retrofit.UI.viewmodel.UserviewModel;
+import com.example.retrofit.UI.viewmodel.UserViewModel;
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.MessageRespose;
-import com.example.retrofit.socketClient.SocketClient;
 import com.example.retrofit.utile.RetrofitManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 
-import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +41,7 @@ public class CommunicateActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private Api api;
-    private UserviewModel myviewmodel;
+    private UserViewModel myviewmodel;
     private RecyclerView mRecyclerView;
     private static MessageViewModel messageViewModel;
     private MessageAdapter messageAdapter;

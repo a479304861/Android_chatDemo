@@ -7,6 +7,13 @@ public class Params {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Params{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     public Params(String name) {
         this.name = name;
     }
