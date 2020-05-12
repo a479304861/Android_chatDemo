@@ -2,7 +2,10 @@ package com.example.retrofit.socketClient;
 
 
 
+import com.example.retrofit.Interface.DataManagerObserve;
+import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.UI.viewmodel.UserViewModel;
+import com.example.retrofit.utile.StaticUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +28,7 @@ public class SocketClient {
             options.reconnectionDelay = 1000;
             options.timeout = 20000;
             options.forceNew = true;
-            socket = IO.socket("http://10.0.2.2:9091/", options);
+            socket = IO.socket(StaticUtils.SOCKETIO_URL, options);
 
 
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -34,58 +37,68 @@ public class SocketClient {
                     socket.emit("login", UserViewModel.getName().getValue());
                 }
             });
-            socket.on("relogin", new Emitter.Listener() {
+            socket.on("reLogin", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     JSONObject obj = (JSONObject)args[0];
                     try {
-                        System.out.println("relogin-------------->"+obj.get("code"));
+                        System.out.println("reLogin-------------->"+obj.get("code"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        if (obj.getString("code").equals("1")){
+                            DataManagerObserve instance = DataManagerObserve.getInstance();
+                            instance.setHavingUpdate(true);
+                            instance.addUpdateListener(new UpdateListener() {
+                                @Override
+                                public void update(boolean b) {
+                                }
+                            });
+                            instance.operation();
+                    }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-//            }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("Socket.EVENT_CONNECT_ERROR");
-////                    socket.disconnect();
-////                }
-////            }).on(Socket.EVENT_CONNECT_TIMEOUT, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("Socket.EVENT_CONNECT_TIMEOUT");
-////                    socket.disconnect();
-////                }
-////            }).on(Socket.EVENT_PING, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("EVENT_PING");
-////                }
-////            }).on(Socket.EVENT_PONG, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("EVENT_PONG");
-////
-////                }
-////            }).on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("EVENT_MESSAGE");
-////
-////                }
-////            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-////                @Override
-////                public void call(Object... args) {
-////                    System.out.println("Socket.EVENT_DISCONNECT");
-////
-////                    socket.disconnect();
-////                }
             });
 
-            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+            socket.on("reDisconnect", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    socket.emit("disconnect", UserViewModel.getName().getValue());
+                    JSONObject obj = (JSONObject)args[0];
+                    try {
+                        System.out.println("reDisconnect-------------->"+obj.get("code"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            socket.on("reNewMessage", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject obj = (JSONObject)args[0];
+                    try {
+                        System.out.println("reNewMessage-------------->"+obj.get("code"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        if (obj.getString("code").equals("3")){
+                            DataManagerObserve instance = DataManagerObserve.getInstance();
+                            instance.setHavingMessage(true);
+                            instance.addUpdateListener(new UpdateListener() {
+                                @Override
+                                public void update(boolean b) {
+                                }
+                            });
+                            instance.operation();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
             //心跳检测
@@ -104,6 +117,7 @@ public class SocketClient {
 
                 }
             });
+
             socket.connect();
 
 //        IO.Options options = new IO.Options();

@@ -24,6 +24,7 @@ import com.example.retrofit.UI.viewmodel.MessageViewModel;
 import com.example.retrofit.UI.viewmodel.UserViewModel;
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.MessageRespose;
+import com.example.retrofit.socketClient.SocketClient;
 import com.example.retrofit.utile.RetrofitManager;
 
 import java.util.HashMap;
@@ -113,18 +114,20 @@ public class CommunicateActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
                         if (response.body().isSuccess()) {
-                            Map<String, Object> params = new HashMap<>();
-                            params.put("info", mTextView.getText().toString());
-                            Call<BaseRespose> broadcast = api.broadcast(params);
-                            broadcast.enqueue(new Callback<BaseRespose>() {
-                                @Override
-                                public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
-                                    isSending=false;
-                                }
-                                @Override
-                                public void onFailure(Call<BaseRespose> call, Throwable t) {
-                                }
-                            });
+                            SocketClient.getSocket().emit("newMessage","1");
+                            isSending=false;
+//                            Map<String, Object> params = new HashMap<>();
+//                            params.put("info", mTextView.getText().toString());
+//                            Call<BaseRespose> broadcast = api.broadcast(params);
+//                            broadcast.enqueue(new Callback<BaseRespose>() {
+//                                @Override
+//                                public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+//                                    isSending=false;
+//                                }
+//                                @Override
+//                                public void onFailure(Call<BaseRespose> call, Throwable t) {
+//                                }
+//                            });
                         }
                     }
 

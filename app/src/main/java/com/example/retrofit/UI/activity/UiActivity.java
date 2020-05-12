@@ -108,7 +108,7 @@ public class UiActivity extends AppCompatActivity {
            @Override
            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
                List<FriendRespose.DataBean> data = response.body().getData();
-               System.out.println("response.body().getData()----------->"+data.toString());
+//               System.out.println("response.body().getData()----------->"+data.toString());
                FriendViewModel.getmData().setValue(response.body().getData());
            }
            @Override

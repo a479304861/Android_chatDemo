@@ -39,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHol
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
-        System.out.println(mData.get(position));
+//        System.out.println(mData.get(position));
         holder.setData(mData.get(position));
     }
 
@@ -61,7 +61,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHol
 
         public void setData(MessageData.DataBean dataBean) {
             if (dataBean.getIsUser()) {
-                System.out.println("right");
+//                System.out.println("right");
                 mTextViewLeft.setText("");
                 mTextViewRight.setText(dataBean.getContent());
             }
