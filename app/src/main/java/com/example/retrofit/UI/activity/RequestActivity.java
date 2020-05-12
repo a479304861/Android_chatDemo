@@ -28,6 +28,7 @@ import com.example.retrofit.utile.StaticUtils;
 import com.example.retrofit.webSocket.WebSocketTest;
 
 import org.java_websocket.enums.ReadyState;
+import org.json.JSONException;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -226,6 +227,8 @@ public class RequestActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 } catch (URISyntaxException e) {
                                     e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                                 Intent intent = new Intent(view.getContext(), UiActivity.class);
                                 startActivity(intent);
@@ -256,7 +259,12 @@ public class RequestActivity extends AppCompatActivity {
 //        api.postFile(part);
     }
 
-    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException {
+    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException, JSONException {
+        SocketClient.main();
+
+
+
+
 //        SocketClient.main();
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("username",myviewmodel.getName().getValue());
@@ -273,14 +281,14 @@ public class RequestActivity extends AppCompatActivity {
 //            }
 //        });
 
-        client = new WebSocketTest(StaticUtils.WEB_SOCKET_URL);
-        client.connect();
-        while (client.getReadyState() != ReadyState.OPEN) {
-            System.out.println("连接状态：" + client.getReadyState());
-            Thread.sleep(100);
-        }
-        client.send("测试数据！");
-        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
+//        client = new WebSocketTest(StaticUtils.WEB_SOCKET_URL);
+////        client.connect();
+////        while (client.getReadyState() != ReadyState.OPEN) {
+////            System.out.println("连接状态：" + client.getReadyState());
+////            Thread.sleep(100);
+////        }
+////        client.send("测试数据！");
+////        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
     }
 
     public void brocast(View view){
