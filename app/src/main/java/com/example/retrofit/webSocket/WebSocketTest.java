@@ -1,6 +1,9 @@
 package com.example.retrofit.webSocket;
 
-import android.util.Log;
+import com.example.retrofit.Interface.DataManagerObserve;
+import com.example.retrofit.Interface.UpdateListener;
+import com.example.retrofit.domain.ReceiveMessage;
+import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -21,17 +24,34 @@ public class WebSocketTest extends WebSocketClient {
     }
 
     @Override
-    public void onMessage(String paramString) {
-        System.out.println(paramString);
+    public void onMessage(String message) {
+        System.out.println(message);
+        Gson gson = new Gson();
+        ReceiveMessage message1=gson.fromJson(message,ReceiveMessage.class);
+        System.out.println(message1.toString());
+
+        if (message1.getCode()==100) {
+            System.out.println("receiveBreast!!!!!!!!!!!!");
+            DataManagerObserve instance = DataManagerObserve.getInstance();
+            instance.setHavingUpdate(true);
+            instance.setHavingMessage(true);
+
+            instance.addUpdateListener(new UpdateListener() {
+                @Override
+                public void update(boolean b) {
+                }
+            });
+            instance.operation();
+        }
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("关闭");
+        System.out.println("");
     }
 
     @Override
     public void onError(Exception ex) {
-        System.out.println("发生错误");
+        System.out.println("");
     }
 }

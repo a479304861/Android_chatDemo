@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -56,10 +58,12 @@ public class RequestActivity extends AppCompatActivity {
     private Api api;
     private Retrofit retrofit;
     private static UserviewModel myviewmodel;
+    private static WebSocketTest client;
 
     public static UserviewModel getMyviewmodel() {
         return myviewmodel;
     }
+    public static WebSocketTest getWebSocketTest(){return client;}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,12 +212,21 @@ public class RequestActivity extends AppCompatActivity {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;
-                                myviewmodel.getId().setValue(response.body().getData().get(0).getId());
+                                myviewmodel.getName().setValue(response.body().getData().get(0).getName());
                                 myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
                                 myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
                                 myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
                                 myviewmodel.getCollectNum().setValue(response.body().getData().get(0).getCollectNum());
                                 myviewmodel.getName().setValue(response.body().getData().get(0).getName());
+                                try {
+                                    WebSocketTest(view);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 Intent intent = new Intent(view.getContext(), UiActivity.class);
                                 startActivity(intent);
                             }
@@ -243,52 +256,50 @@ public class RequestActivity extends AppCompatActivity {
 //        api.postFile(part);
     }
 
-    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException {
-        WebSocketTest client = new WebSocketTest("ws://10.0.2.2:8080/websocket/server");
-        client.connect();
-        while (client.getReadyState() != ReadyState.OPEN) {
-            System.out.println("连接状态：" + client.getReadyState());
-            Thread.sleep(100);
-        }
-        client.send("测试数据！");
-        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
-//        client.close();
-        Map<String, Object> params = new HashMap<>();
-        params.put("username", "123");
-        params.put("password", "1");
-        Call<BaseRespose> hello = api.WebSocketlogin(params);
-        hello.enqueue(new Callback<BaseRespose>() {
-            @Override
-            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
-                Log.d(TAG, response.body().toString());
-//                Log.d(TAG, "！！！！！！！！！！！！！！！！！1 ");
-            }
+    public void WebSocketTest(View view) throws InterruptedException, URISyntaxException, JSONException {
+        SocketClient.main();
 
-            @Override
-            public void onFailure(Call<BaseRespose> call, Throwable t) {
 
-            }
-        });
 
-        Map<String, Object> params2 = new HashMap<>();
-        params2.put("info", "123");
-        Call<BaseRespose> baseResposeCall = api.broadcast(params2);
-        baseResposeCall.enqueue(new Callback<BaseRespose>() {
-            @Override
-            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
-                Log.d(TAG, "!!!!!!!!!!");
-            }
 
-            @Override
-            public void onFailure(Call<BaseRespose> call, Throwable t) {
+//        SocketClient.main();
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("username",myviewmodel.getName().getValue());
+//        Call<BaseRespose> baseResposeCall = api.WebSocketlogin(params);
+//        baseResposeCall.enqueue(new Callback<BaseRespose>() {
+//            @Override
+//            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseRespose> call, Throwable t) {
+//
+//            }
+//        });
 
-            }
-        });
-
+//        client = new WebSocketTest(StaticUtils.WEB_SOCKET_URL);
+////        client.connect();
+////        while (client.getReadyState() != ReadyState.OPEN) {
+////            System.out.println("连接状态：" + client.getReadyState());
+////            Thread.sleep(100);
+////        }
+////        client.send("测试数据！");
+////        Toast.makeText(this, "链接成功", Toast.LENGTH_SHORT).show();
     }
 
-    public void hello() {
-
+    public void brocast(View view){
+        Map<String, Object> params = new HashMap<>();
+        params.put("info", "123");
+        Call<BaseRespose> broadcast = api.broadcast(params);
+        broadcast.enqueue(new Callback<BaseRespose>() {
+            @Override
+            public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
+            }
+            @Override
+            public void onFailure(Call<BaseRespose> call, Throwable t) {
+            }
+        });
     }
 
 

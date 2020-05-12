@@ -39,7 +39,9 @@ public class UserviewModel extends ViewModel {
     }
 
 
-
+    public void addLikeNum(){
+        likeNum.setValue(likeNum.getValue()+1);
+    }
 
 
     public MutableLiveData<Integer>  getCollectNum() {

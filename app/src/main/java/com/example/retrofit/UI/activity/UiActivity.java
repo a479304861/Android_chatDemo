@@ -3,6 +3,8 @@ package com.example.retrofit.UI.activity;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,17 +12,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
-import com.example.retrofit.UI.adapter.TestAdapter;
+import com.example.retrofit.Interface.DataManagerObserve;
+import com.example.retrofit.Interface.UpdateListener;
+import com.example.retrofit.UI.adapter.FriendAdapter;
+import com.example.retrofit.UI.viewmodel.FriendViewModel;
 import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.R;
 import com.example.retrofit.domain.FriendRespose;
 import com.example.retrofit.utile.RetrofitManager;
+import com.example.retrofit.webSocket.WebSocketTest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -34,18 +43,22 @@ public class UiActivity extends AppCompatActivity {
     private Api api;
     private  Retrofit retrofit;
     private long exitTime;
+    private FriendAdapter friendAdapter;
+    private static WebSocketTest client;
+
 
     UserviewModel myviewModel;
     Bundle bundle;
     TextView mCollectNum,mLikeNum,mFansNum,mTransmit,mName;
     RecyclerView mRecyclerView;
+    private static FriendViewModel friendViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_u_iactivity);
-
+       friendViewModel= new ViewModelProvider(this).get(FriendViewModel.class);
         init();
     }
 
@@ -75,23 +88,28 @@ public class UiActivity extends AppCompatActivity {
         retrofit= RetrofitManager.getRetrofit();
         api=retrofit.create(Api.class);
         myviewModel=RequestActivity.getMyviewmodel();
-        System.out.println("myviewModel.getTransmitNum().getValue():"+myviewModel.getCollectNum().getValue());
+
         observe();
         getFriend();
+
+
+        mLikeNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myviewModel.addLikeNum();
+            }
+        });
+
     }
 
-   private  void getFriend(){
+    private  void getFriend(){
        Map<String,Object> params= new HashMap<>();
-       params.put("id",17);
+       params.put("id",String.valueOf(myviewModel.getId().getValue()));
        Call<FriendRespose> friend = api.getFriend(params);
        friend.enqueue(new Callback<FriendRespose>() {
            @Override
            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
-                TestAdapter testAdapter = new TestAdapter( response.body().getData());
-                mRecyclerView.setAdapter(testAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
-                mRecyclerView.setLayoutManager(linearLayoutManager);
-
+                FriendViewModel.getmData().setValue(response.body().getData());
            }
            @Override
            public void onFailure(Call<FriendRespose> call, Throwable t) {
@@ -99,7 +117,20 @@ public class UiActivity extends AppCompatActivity {
            }
        });
    }
+
     private void observe(){
+        DataManagerObserve instance = DataManagerObserve.getInstance();
+        instance.addUpdateListener(new UpdateListener() {
+            @Override
+            public void update(boolean b) {
+                if (instance.getIsHavingUpdate()==true) {
+                    instance.setHavingUpdate(false);
+                    getFriend();
+                }
+            }
+        });
+        instance.operation();
+
         myviewModel.getName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -129,6 +160,16 @@ public class UiActivity extends AppCompatActivity {
                 public void onChanged(Integer integer) {
                     mTransmit.setText(String.valueOf(integer));
                 }
+        });
+        FriendViewModel.getmData().observe(this, new Observer<List<FriendRespose.DataBean>>() {
+            @Override
+            public void onChanged(List<FriendRespose.DataBean> dataBeans) {
+                System.out.println("��!!!!!!!!!!!!!!!!!!!!!!!");
+                friendAdapter = new FriendAdapter(dataBeans);
+                mRecyclerView.setAdapter(friendAdapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
+                mRecyclerView.setLayoutManager(linearLayoutManager);
+            }
         });
 
     }

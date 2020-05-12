@@ -12,22 +12,26 @@ public class FriendRespose {
         this.data = new ArrayList<DataBean>();
     }
 
-    @Override
-    public String toString() {
-        return "FriendRespose{" +
-                "succeed=" + succeed +
-                ", data=" + data +
-                '}';
-    }
+
     public static class DataBean{
         private int friendId;
+        private boolean isOnline;
 
         @Override
         public String toString() {
             return "DataBean{" +
                     "friendId=" + friendId +
+                    ", isOnline=" + isOnline +
                     ", name='" + name + '\'' +
                     '}';
+        }
+
+        public boolean isOnline() {
+            return isOnline;
+        }
+
+        public void setOnline(boolean online) {
+            isOnline = online;
         }
 
         private String name;
@@ -37,11 +41,9 @@ public class FriendRespose {
         public void setFriendId(int friendId) {
             this.friendId = friendId;
         }
-
         public String getName() {
             return name;
         }
-
         public void setName(String name) {
             this.name = name;
         }
