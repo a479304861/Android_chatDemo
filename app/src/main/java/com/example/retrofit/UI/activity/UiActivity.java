@@ -164,7 +164,7 @@ public class UiActivity extends AppCompatActivity {
         FriendViewModel.getmData().observe(this, new Observer<List<FriendRespose.DataBean>>() {
             @Override
             public void onChanged(List<FriendRespose.DataBean> dataBeans) {
-                System.out.println("��!!!!!!!!!!!!!!!!!!!!!!!");
+//                System.out.println("��!!!!!!!!!!!!!!!!!!!!!!!");
                 friendAdapter = new FriendAdapter(dataBeans);
                 mRecyclerView.setAdapter(friendAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());

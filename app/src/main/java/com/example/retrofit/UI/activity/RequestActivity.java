@@ -22,11 +22,13 @@ import com.example.retrofit.UI.viewmodel.UserviewModel;
 import com.example.retrofit.domain.BaseRespose;
 import com.example.retrofit.domain.User;
 import com.example.retrofit.socket.SocketTest;
+import com.example.retrofit.socketClient.SocketClient;
 import com.example.retrofit.utile.RetrofitManager;
 import com.example.retrofit.utile.StaticUtils;
 import com.example.retrofit.webSocket.WebSocketTest;
 
 import org.java_websocket.enums.ReadyState;
+import org.json.JSONException;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -212,6 +214,7 @@ public class RequestActivity extends AppCompatActivity {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;
+                                myviewmodel.getId().setValue(response.body().getData().get(0).getId());
                                 myviewmodel.getName().setValue(response.body().getData().get(0).getName());
                                 myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
                                 myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());

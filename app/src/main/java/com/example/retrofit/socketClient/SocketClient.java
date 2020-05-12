@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi;
 import com.example.retrofit.domain.Params;
 import com.example.retrofit.domain.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,25 +35,31 @@ public class SocketClient {
             options.reconnectionDelay = 1000;
             options.timeout = 20000;
             options.forceNew = true;
-            options.query = "username=test1&password=test1&appid=com.xncoding.apay2";
             socket = IO.socket("http://10.0.2.2:9091/", options);
+
+
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     // 客户端一旦连接成功，开始发起登录请求
-                    Map<String , Object> message = new HashMap<>();
-                    message.put("name","123");
-                    message.put("password","456");
-
-                    System.out.println(message.toString());
-                    socket.emit("login",message, (Ack) args1 -> {
-//                        logger.info("回执消息=" + Arrays.stream(args1).map(Object::toString).collect(Collectors.joining(",")));
-                    });
+//                    JSONObject obj = new JSONObject();
+//                    try {
+//                        obj.put("name", "zhangsan");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    socket.emit("login",obj);
                 }
-            }).on("login", new Emitter.Listener() {
+            });
+            socket.on("relogin", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    System.out.println(args.toString());
+                    JSONObject obj = (JSONObject)args[0];
+                    try {
+                        System.out.println(obj.get("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 //            }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
 ////                @Override
@@ -89,6 +97,23 @@ public class SocketClient {
 ////
 ////                    socket.disconnect();
 ////                }
+            });
+
+
+            socket.on("broadcast", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject obj = (JSONObject)args[0];
+                    try {
+                        System.out.println(obj.getString("code"));
+                        if (obj.getString("code").equals("100")){
+                            socket.emit("answer","1000");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             });
             socket.connect();
 

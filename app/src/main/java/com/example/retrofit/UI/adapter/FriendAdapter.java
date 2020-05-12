@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofit.R;
 import com.example.retrofit.UI.activity.CommunicateActivity;
-import com.example.retrofit.UI.activity.UIactivity;
+
 import com.example.retrofit.domain.FriendRespose;
 
 import java.util.List;
