@@ -7,8 +7,10 @@ import com.example.retrofit.domain.User;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 
 public interface Api {
@@ -41,13 +43,14 @@ public interface Api {
 
     @GET("/sendToUser")
     Call<BaseRespose>sendToUser(@QueryMap Map<String, Object> params);
-//获得消息记录
+
     @GET("/user/getMessage")
     Call<MessageRespose>getMessage(@QueryMap Map<String, Object> params);
 
-    @GET("/websocket/server")
-    Call<MessageRespose> test();
 
+
+    @GET("/postfile")
+    Call<BaseRespose> postfile(@Part MultipartBody.Part part);
 
 
 

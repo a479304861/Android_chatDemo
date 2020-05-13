@@ -76,7 +76,8 @@ public class RequestActivity extends AppCompatActivity {
         init();
     }
 
-    private void init() {
+    //初始化
+     private void init() {
         retrofit = RetrofitManager.getRetrofit();
         api = retrofit.create(Api.class);
         if (myviewmodel.getIsLoad().getValue() == true) {
@@ -249,7 +250,7 @@ public class RequestActivity extends AppCompatActivity {
         File file = new File("");
         RequestBody body = RequestBody.create(MediaType.parse("image/jpeg"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", "", body);
-//        api.postFile(part);
+        api.postfile(part);
     }
 
     public void WebSocketTest(View view) throws  URISyntaxException {

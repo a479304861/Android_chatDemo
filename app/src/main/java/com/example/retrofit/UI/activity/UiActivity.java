@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +61,20 @@ public class UiActivity extends AppCompatActivity {
        friendViewModel= new ViewModelProvider(this).get(FriendViewModel.class);
         init();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        // 引入一个菜单布局文件
+        getMenuInflater().inflate(R.menu.test_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Toast.makeText(this, "我选择了" + item.getTitle().toString(), Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

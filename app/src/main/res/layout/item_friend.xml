@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteY="44dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -37,6 +37,14 @@
             android:layout_weight="1"
             android:text="TextView"
             android:textSize="10sp" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView" />
 
 </LinearLayout>
