@@ -44,8 +44,8 @@ public class CommunicateActivity extends AppCompatActivity {
     private Api api;
     private UserViewModel myviewmodel;
     private static RecyclerView mRecyclerView;
-    private MessageViewModel messageViewModel;
-    private TextView mTextView;
+//    private MessageViewModel messageViewModel;
+    private TextView mTextView,TvName;
     private boolean isSending=false;
 
 
@@ -65,22 +65,20 @@ public class CommunicateActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void init() {
-
+        //获得全局变量，初始化retrofit，api
         DataManagerObserve instance = DataManagerObserve.getInstance();
         retrofit = RetrofitManager.getRetrofit();
         api = retrofit.create(Api.class);
 
         myviewmodel = RequestActivity.getMyviewmodel();
+//        TvName.findViewById(R.id.CommunicateActivity_friendName);
         mRecyclerView = findViewById(R.id.CommunicateActivity_RecycleView);
         mTextView=findViewById(R.id.activity_communicate_editText);
-        messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
+//        TvName.setText(instance.getNowFriendName());
+//        messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
 //        messageData = new MessageData();
+        //获得消息，设立观察者
         getMeasure(instance.getNowFriend());
-
-
-
-
-
         observe();
 //        List<MessageRespose.DataBean> dataBeans = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
@@ -125,20 +123,13 @@ public class CommunicateActivity extends AppCompatActivity {
                         MessageData.getData().add(dataBean);
                     }
                 }
-
-                System.out.println(MessageData.getData().toString());
-
+//                System.out.println(MessageData.getData().toString());
                 messageAdapter=new MessageAdapter(MessageData.getData());
-
-//                messageAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(messageAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
-                System.out.println("mRecyclerView--->"+mRecyclerView);
+//                System.out.println("mRecyclerView--->"+mRecyclerView);
                 mRecyclerView.setLayoutManager(linearLayoutManager);
                 mRecyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
-
-
-
             }
 
             @Override

@@ -46,11 +46,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CommunicateActivity.class);
-//                Bundle bundle=new Bundle();
-//                bundle.putInt("data",  mData.get(position).getFriendId());
-//                intent.putExtras(bundle);
+
                 DataManagerObserve instance = DataManagerObserve.getInstance();
                 instance.setNowFriend(mData.get(position).getFriendId());
+                instance.setNowFriendName(mData.get(position).getName());
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -65,12 +64,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
     }
 
     public static class InnerHolder extends RecyclerView.ViewHolder {
-        private TextView friendName,friendId,isOnline;
+        private TextView friendName,friendId,isOnline,lastMessage,lastTime;
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             friendName = itemView.findViewById(R.id.item_testview_name);
             friendId =itemView.findViewById(R.id.item_testview_id);
+            lastMessage=itemView.findViewById(R.id.item_testview_lastMessage);
             isOnline=itemView.findViewById(R.id.item_friend_isOnline);
+            lastTime=itemView.findViewById(R.id.item_testview_lasttime);
         }
 
         //
@@ -78,9 +79,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
             if (dataBean.getIsOnline().equals("1")) {
                 isOnline.setText("在线");
             }
-            else isOnline.setText("离线请留言");
+            else isOnline.setText("离线请留言      :");
             friendName.setText(dataBean.getName());
+            lastMessage.setText(dataBean.getLastMessage());
             friendId.setText(String.valueOf(dataBean.getFriendId()));
+            lastTime.setText(dataBean.getLastTime());
         }
     }
 }

@@ -5,30 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.activity.CommunicateActivity">
+    tools:context=".UI.activity.CommunicateActivity"
+    android:background="@drawable/imgbg4">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#F3F3F3"
-        android:orientation="vertical">
+        android:background="#BBF1E3"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="#BBF1E3"
             android:onClick="setBack"
             app:srcCompat="@drawable/abc_vector_test" />
+
+        <TextView
+            android:id="@+id/CommunicateActivity_friendName"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:autoText="false"
+            android:text="消息"
+            android:textAlignment="center"
+            android:textColor="#FF9800"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#BBF1E3" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="530dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_height="610dp"
         android:layout_weight="1"
         android:background="#B2E7EFF4"
         android:orientation="horizontal">
@@ -42,14 +60,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#BEEAE5"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/activity_communicate_editText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:ems="10"
             android:inputType="textPersonName" />
 
@@ -59,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:background="#00000000"
             android:onClick="sentToOther"
             android:text="发送" />
     </LinearLayout>

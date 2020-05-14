@@ -47,7 +47,7 @@ public class SocketClient {
                         e.printStackTrace();
                     }
                     try {
-                        if (obj.getString("code").equals("img1")){
+                        if (obj.getString("code").equals("1")){
                             DataManagerObserve instance = DataManagerObserve.getInstance();
                             instance.setHavingUpdate(true);
                             instance.addUpdateListener(new UpdateListener() {
@@ -86,6 +86,7 @@ public class SocketClient {
                         if (obj.getString("code").equals("3")){
                             DataManagerObserve instance = DataManagerObserve.getInstance();
                             instance.setHavingMessage(true);
+                            instance.setHavingUpdate(true);
                             instance.addUpdateListener(new UpdateListener() {
                                 @Override
                                 public void update(boolean b) {

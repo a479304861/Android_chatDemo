@@ -6,9 +6,17 @@ public class DataManagerObserve extends  AbstractSubject{
     private boolean isHavingUpdate;
     private boolean isHavingMessage;
     private int nowFriend;
-
+    private String nowFriendName;
     public int getNowFriend() {
         return nowFriend;
+    }
+
+    public String getNowFriendName() {
+        return nowFriendName;
+    }
+
+    public void setNowFriendName(String nowFriendName) {
+        this.nowFriendName = nowFriendName;
     }
 
     public void setNowFriend(int nowFriend) {

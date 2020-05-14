@@ -3,6 +3,7 @@ package com.example.retrofit.UI.fragment;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,7 @@ import retrofit2.Retrofit;
  */
 public class MessageFragment extends Fragment {
 
-    private static final String TAG ="UIactivity" ;
+    private static final String TAG = "UIactivity";
     private Api api;
     private Retrofit retrofit;
 
@@ -54,9 +56,10 @@ public class MessageFragment extends Fragment {
     private static WebSocketTest client;
 
     UserViewModel myviewModel;
-    TextView mCollectNum,mLikeNum,mFansNum,mTransmit,mName;
-    RecyclerView mRecyclerView;
+    TextView mCollectNum, mLikeNum, mFansNum, mTransmit, mName;
+    private static RecyclerView mRecyclerView;
     private static FriendViewModel friendViewModel;
+
     public MessageFragment() {
         // Required empty public constructor
     }
@@ -67,109 +70,132 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view=inflater.inflate(R.layout.fragment_message, container, false);
-        friendViewModel= new ViewModelProvider(this).get(FriendViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        friendViewModel = new ViewModelProvider(this).get(FriendViewModel.class);
         mCollectNum = view.findViewById(R.id.textViewCollect);
         mLikeNum = view.findViewById(R.id.textView_Like);
         mFansNum = view.findViewById(R.id.textViewFans);
         mTransmit = view.findViewById(R.id.textViewTransmit);
-        mName=view.findViewById(R.id.textViewName);
-        mRecyclerView=view.findViewById(R.id.recyclerView);
+        mName = view.findViewById(R.id.textViewName);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
         init();
-        return  view;
+        return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void  init(){
-
-        retrofit= RetrofitManager.getRetrofit();
-        api=retrofit.create(Api.class);
-        myviewModel= RequestActivity.getMyviewmodel();
-
-        observe();
-        getFriend();
-
-
-        mLikeNum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myviewModel.addLikeNum();
-            }
-        });
-
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        inflater.inflate(R.menu.addfriend_menu, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
 //
-    private  void getFriend(){
-        Map<String,Object> params= new HashMap<>();
-        params.put("id",String.valueOf(myviewModel.getId().getValue()));
-        Call<FriendRespose> friend = api.getFriend(params);
-        friend.enqueue(new Callback<FriendRespose>() {
-            @Override
-            public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
-                List<FriendRespose.DataBean> data = response.body().getData();
-//               System.out.println("response.body().getData()----------->"+data.toString());
-                FriendViewModel.getmData().setValue(response.body().getData());
-            }
-            @Override
-            public void onFailure(Call<FriendRespose> call, Throwable t) {
-                Log.d(TAG, "onFailure: ");
-            }
-        });
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.option_normal_1:
+//                return true;
+//            case R.id.option_normal_2:
+//                return true;
+//            case R.id.option_normal_3:
+//                return true;
+//            case R.id.option_normal_4:
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
-    private void observe(){
-        DataManagerObserve instance = DataManagerObserve.getInstance();
-        instance.addUpdateListener(new UpdateListener() {
-            @Override
-            public void update(boolean b) {
-                if (instance.getIsHavingUpdate()==true) {
-                    instance.setHavingUpdate(false);
-                    getFriend();
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        private void init () {
+
+            retrofit = RetrofitManager.getRetrofit();
+            api = retrofit.create(Api.class);
+            myviewModel = RequestActivity.getMyviewmodel();
+            observe();
+            getFriend();
+
+            mLikeNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myviewModel.addLikeNum();
                 }
-            }
-        });
-        instance.operation();
+            });
 
-        myviewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mName.setText(s);
-            }
-        });
-        myviewModel.getLikeNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mLikeNum.setText(String.valueOf(integer));
-            }
-        });
-        myviewModel.getCollectNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mCollectNum.setText(String.valueOf(integer));
-            }
-        });
-        myviewModel.getFansNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mFansNum.setText(String.valueOf(integer));
-            }
-        });
-        myviewModel.getTransmitNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mTransmit.setText(String.valueOf(integer));
-            }
-        });
-        FriendViewModel.getmData().observe(getViewLifecycleOwner(), new Observer<List<FriendRespose.DataBean>>() {
-            @Override
-            public void onChanged(List<FriendRespose.DataBean> dataBeans) {
+        }
+//
+        private void getFriend () {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", String.valueOf(myviewModel.getId().getValue()));
+            Call<FriendRespose> friend = api.getFriend(params);
+            friend.enqueue(new Callback<FriendRespose>() {
+                @Override
+                public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
 
-                friendAdapter = new FriendAdapter(dataBeans);
-                mRecyclerView.setAdapter(friendAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                mRecyclerView.setLayoutManager(linearLayoutManager);
-            }
-        });
+//               System.out.println("response.body().getData()----------->"+data.toString());
+                    FriendViewModel.getmData().setValue(response.body().getData());
+                }
 
-    }
+                @Override
+                public void onFailure(Call<FriendRespose> call, Throwable t) {
+                    Log.d(TAG, "onFailure: ");
+                }
+            });
+        }
+
+        private void observe () {
+            DataManagerObserve instance = DataManagerObserve.getInstance();
+            instance.addUpdateListener(new UpdateListener() {
+                @Override
+                public void update(boolean b) {
+                    if (instance.getIsHavingUpdate() == true) {
+                        instance.setHavingUpdate(false);
+                        getFriend();
+                    }
+                }
+            });
+            instance.operation();
+
+            myviewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    mName.setText(s);
+                }
+            });
+            myviewModel.getLikeNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    mLikeNum.setText(String.valueOf(integer));
+                }
+            });
+            myviewModel.getCollectNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    mCollectNum.setText(String.valueOf(integer));
+                }
+            });
+            myviewModel.getFansNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    mFansNum.setText(String.valueOf(integer));
+                }
+            });
+            myviewModel.getTransmitNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    mTransmit.setText(String.valueOf(integer));
+                }
+            });
+            FriendViewModel.getmData().observe(getViewLifecycleOwner(), new Observer<List<FriendRespose.DataBean>>() {
+                @Override
+                public void onChanged(List<FriendRespose.DataBean> dataBeans) {
+
+                    friendAdapter = new FriendAdapter(dataBeans);
+                    mRecyclerView.setAdapter(friendAdapter);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    mRecyclerView.setLayoutManager(linearLayoutManager);
+                }
+            });
+
+        }
+
 }

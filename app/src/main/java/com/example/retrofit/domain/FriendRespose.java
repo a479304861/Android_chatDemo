@@ -31,21 +31,37 @@ public class FriendRespose {
 
 
     public static class DataBean{
+        private String lastMessage;
         private int friendId;
         private String isOnline;
         private String name;
-
-        public DataBean() {
-            isOnline="1";
-        }
+        private String time;
 
         @Override
         public String toString() {
             return "DataBean{" +
-                    "friendId=" + friendId +
-                    ", isOnline=" + isOnline +
+                    "lastMessage='" + lastMessage + '\'' +
+                    ", friendId=" + friendId +
+                    ", isOnline='" + isOnline + '\'' +
                     ", name='" + name + '\'' +
+                    ", lastTime='" + time + '\'' +
                     '}';
+        }
+
+        public String getLastTime() {
+            return time;
+        }
+
+        public void setLastTime(String lastTime) {
+            this.time = lastTime;
+        }
+
+        public String getLastMessage() {
+            return lastMessage;
+        }
+
+        public void setLastMessage(String lastMessage) {
+            this.lastMessage = lastMessage;
         }
 
         public String getIsOnline() {
