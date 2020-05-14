@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageData {
-    private List<DataBean> data;
+    private static List<DataBean> data;
 
     public MessageData() {
         data=new ArrayList<>();
     }
 
-    public List<DataBean> getData() {
+    public static List<DataBean> getData() {
+        if (data==null){
+            data=new ArrayList<>();
+        }
         return data;
     }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
+    public static void setData(List<DataBean> datatemp) {
+        data = datatemp;
     }
 
     @Override

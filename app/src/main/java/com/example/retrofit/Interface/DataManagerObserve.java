@@ -5,6 +5,15 @@ public class DataManagerObserve extends  AbstractSubject{
     private static volatile DataManagerObserve INSTANCE;
     private boolean isHavingUpdate;
     private boolean isHavingMessage;
+    private int nowFriend;
+
+    public int getNowFriend() {
+        return nowFriend;
+    }
+
+    public void setNowFriend(int nowFriend) {
+        this.nowFriend = nowFriend;
+    }
 
     public boolean getisHavingMessage() {
         return isHavingMessage;

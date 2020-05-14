@@ -47,7 +47,7 @@ public class SocketClient {
                         e.printStackTrace();
                     }
                     try {
-                        if (obj.getString("code").equals("1")){
+                        if (obj.getString("code").equals("img1")){
                             DataManagerObserve instance = DataManagerObserve.getInstance();
                             instance.setHavingUpdate(true);
                             instance.addUpdateListener(new UpdateListener() {
@@ -62,8 +62,6 @@ public class SocketClient {
                     }
                 }
             });
-
-
             socket.on("reDisconnect", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {

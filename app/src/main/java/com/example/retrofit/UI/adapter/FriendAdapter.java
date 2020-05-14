@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.retrofit.Interface.DataManagerObserve;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.activity.CommunicateActivity;
 
@@ -45,9 +46,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CommunicateActivity.class);
-                Bundle bundle=new Bundle();
-                bundle.putInt("data",  mData.get(position).getFriendId());
-                intent.putExtras(bundle);
+//                Bundle bundle=new Bundle();
+//                bundle.putInt("data",  mData.get(position).getFriendId());
+//                intent.putExtras(bundle);
+                DataManagerObserve instance = DataManagerObserve.getInstance();
+                instance.setNowFriend(mData.get(position).getFriendId());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

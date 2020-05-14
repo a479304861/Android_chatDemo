@@ -1,5 +1,6 @@
 package com.example.retrofit.UI.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,23 +11,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofit.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.InnerHolder> {
 
+    private static final String TAG = "";
     private  List<MessageData.DataBean> mData;
+
 
 
     public List<MessageData.DataBean> getData() {
         return mData;
     }
     public void setData(List<MessageData.DataBean> beans) {
+        if (mData!=null){
+            Log.d(TAG, "setData: clear!!!!!!!!!!!");
+            mData.clear();}
+
         this.mData=beans;
+        notifyDataSetChanged();
     }
 
-    public MessageAdapter(List<MessageData.DataBean> data){
-        this.mData=data;
-        System.out.println(mData);
+    public MessageAdapter(List<MessageData.DataBean> data) {
+        if (data==null)
+        {
+            mData=new ArrayList<>();
+        }
+        mData = data;
     }
 
     @NonNull

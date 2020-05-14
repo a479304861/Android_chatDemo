@@ -76,7 +76,7 @@ public  class SocketTest {
                 printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(   //步骤二
                         socket.getOutputStream(), "UTF-8")), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-                mExecutorService.execute(new SendService("1"));
+                mExecutorService.execute(new SendService("img1"));
                 receiveMsg();
             } catch (Exception e) {
                 Log.e(TAG, ("connectService:" + e.getMessage()));   //如果Socket对象获取失败，即连接建立失败，会走到这段逻辑

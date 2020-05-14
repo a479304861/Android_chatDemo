@@ -2,14 +2,13 @@ package com.example.retrofit.UI.activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +19,7 @@ import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.adapter.MessageAdapter;
 import com.example.retrofit.UI.adapter.MessageData;
+
 import com.example.retrofit.UI.viewmodel.MessageViewModel;
 import com.example.retrofit.UI.viewmodel.UserViewModel;
 import com.example.retrofit.domain.BaseRespose;
@@ -39,36 +39,48 @@ import retrofit2.Retrofit;
 public class CommunicateActivity extends AppCompatActivity {
 
 
-
+    private static final String TAG = "CommunicateActivity";
     private Retrofit retrofit;
     private Api api;
     private UserViewModel myviewmodel;
-    private RecyclerView mRecyclerView;
-    private static MessageViewModel messageViewModel;
-    private MessageAdapter messageAdapter;
+    private static RecyclerView mRecyclerView;
+    private MessageViewModel messageViewModel;
     private TextView mTextView;
-    private int receiveId;
     private boolean isSending=false;
+
+
+
+    private  MessageAdapter messageAdapter;
+//    private  MessageData messageData;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communicate);
-        messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
         init();
+        Log.d(TAG, "onCreate: !!!!!!");
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void init() {
-        Intent intent = getIntent();
-        receiveId = intent.getIntExtra("data", 0);
+
+        DataManagerObserve instance = DataManagerObserve.getInstance();
         retrofit = RetrofitManager.getRetrofit();
         api = retrofit.create(Api.class);
+
         myviewmodel = RequestActivity.getMyviewmodel();
         mRecyclerView = findViewById(R.id.CommunicateActivity_RecycleView);
         mTextView=findViewById(R.id.activity_communicate_editText);
-        getMeasure(receiveId);
+        messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
+//        messageData = new MessageData();
+        getMeasure(instance.getNowFriend());
+
+
+
+
+
         observe();
 //        List<MessageRespose.DataBean> dataBeans = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
@@ -81,6 +93,14 @@ public class CommunicateActivity extends AppCompatActivity {
 //
     }
 
+    @Override
+    protected void onResume() {
+
+        DataManagerObserve instance = DataManagerObserve.getInstance();
+        getMeasure(instance.getNowFriend());
+        super.onResume();
+    }
+
     private void getMeasure(int data) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", String.valueOf(myviewmodel.getId().getValue()));
@@ -90,7 +110,35 @@ public class CommunicateActivity extends AppCompatActivity {
         messuage.enqueue(new Callback<MessageRespose>() {
             @Override
             public void onResponse(Call<MessageRespose> call, Response<MessageRespose> response) {
-                MessageViewModel.getmData().setValue(response.body().getData());
+//                messageViewModel.getmData().setValue(response.body().getData());
+
+                List<MessageRespose.DataBean> dataBeans = response.body().getData();
+                //trans to
+               MessageData.getData().clear();
+                if (dataBeans!=null) {
+                    for (int i = 0; i < dataBeans.size(); i++) {
+                        MessageData.DataBean dataBean = new MessageData.DataBean();
+                        dataBean.setContent(dataBeans.get(i).getContent());
+                        if (dataBeans.get(i).getSendId() == myviewmodel.getId().getValue()) {
+                            dataBean.setUser(true);
+                        }
+                        MessageData.getData().add(dataBean);
+                    }
+                }
+
+                System.out.println(MessageData.getData().toString());
+
+                messageAdapter=new MessageAdapter(MessageData.getData());
+
+//                messageAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(messageAdapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
+                System.out.println("mRecyclerView--->"+mRecyclerView);
+                mRecyclerView.setLayoutManager(linearLayoutManager);
+                mRecyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+
+
+
             }
 
             @Override
@@ -105,7 +153,8 @@ public class CommunicateActivity extends AppCompatActivity {
                 isSending=true;
                 Map<String, Object> params2 = new HashMap<>();
                 params2.put("sendId",String.valueOf(myviewmodel.getId().getValue()));
-                params2.put("receiveId",String.valueOf(receiveId));
+                DataManagerObserve instance = DataManagerObserve.getInstance();
+                params2.put("receiveId",instance.getNowFriend());
                 params2.put("info",mTextView.getText().toString());
                 mTextView.setText("");
                 System.out.println(params2);
@@ -114,8 +163,9 @@ public class CommunicateActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<BaseRespose> call, Response<BaseRespose> response) {
                         if (response.body().isSuccess()) {
-                            SocketClient.getSocket().emit("newMessage","1");
+                            SocketClient.getSocket().emit("newMessage","new Message");
                             isSending=false;
+                            //websocket
 //                            Map<String, Object> params = new HashMap<>();
 //                            params.put("info", mTextView.getText().toString());
 //                            Call<BaseRespose> broadcast = api.broadcast(params);
@@ -177,43 +227,43 @@ public class CommunicateActivity extends AppCompatActivity {
 
     public void observe() {
 
-        MessageViewModel.getmData().observe(this, new Observer<List<MessageRespose.DataBean>>() {
-            @Override
-            public void onChanged(List<MessageRespose.DataBean> dataBeans) {
-                System.out.println("调!!!!!!!!!!!!!!!!!!!!!!!");
-                //trans to
-                MessageData messageData = new MessageData();
-                if (dataBeans!=null) {
-                    for (int i = 0; i < dataBeans.size(); i++) {
-                        MessageData.DataBean dataBean = new MessageData.DataBean();
-                        dataBean.setContent(dataBeans.get(i).getContent());
-                        if (dataBeans.get(i).getSendId() == myviewmodel.getId().getValue()) {
-                            dataBean.setUser(true);
-                        }
-                        messageData.getData().add(dataBean);
-                    }
-                }
-                System.out.println(messageData.getData().toString());
-
-                messageAdapter = new MessageAdapter(messageData.getData());
-                mRecyclerView.setAdapter(messageAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
-                mRecyclerView.setLayoutManager(linearLayoutManager);
-                mRecyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
-
-            }
-
-
-        });
+//        messageViewModel.getmData().observe(this, new Observer<List<MessageRespose.DataBean>>() {
+//            @Override
+//            public void onChanged(List<MessageRespose.DataBean> dataBeans) {
+//                System.out.println("调!!!!!!!!!!!!!!!!!!!!!!!");
+//                //trans to
+//                MessageData messageData = new MessageData();
+//                if (dataBeans!=null) {
+//                    for (int i = 0; i < dataBeans.size(); i++) {
+//                        MessageData.DataBean dataBean = new MessageData.DataBean();
+//                        dataBean.setContent(dataBeans.get(i).getContent());
+//                        if (dataBeans.get(i).getSendId() == myviewmodel.getId().getValue()) {
+//                            dataBean.setUser(true);
+//                        }
+//                        messageData.getData().add(dataBean);
+//                    }
+//                }
+//                System.out.println(messageData.getData().toString());
+//
+//                messageAdapter = new MessageAdapter(messageData.getData());
+//                mRecyclerView.setAdapter(messageAdapter);
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParent());
+//                mRecyclerView.setLayoutManager(linearLayoutManager);
+//                mRecyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+//
+//            }
+//
+//
+//        });
 
         DataManagerObserve instance = DataManagerObserve.getInstance();
         instance.addUpdateListener(new UpdateListener() {
             @Override
             public void update(boolean b) {
                 if (instance.getisHavingMessage()==true) {
-                    System.out.println("监receive!!!!!!" );
                     instance.setHavingMessage(false);
-                    getMeasure(receiveId);
+                    Log.d(TAG, "update: "+instance.getNowFriend());
+                    getMeasure(instance.getNowFriend());
                 }
             }
         });
