@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.Interface.DataManagerObserve;
+import com.example.retrofit.Interface.StateObserve;
 import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.activity.RequestActivity;
@@ -72,10 +73,10 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         friendViewModel = new ViewModelProvider(this).get(FriendViewModel.class);
-        mCollectNum = view.findViewById(R.id.textViewCollect);
-        mLikeNum = view.findViewById(R.id.textView_Like);
-        mFansNum = view.findViewById(R.id.textViewFans);
-        mTransmit = view.findViewById(R.id.textViewTransmit);
+//        mCollectNum = view.findViewById(R.id.textViewCollect);
+//        mLikeNum = view.findViewById(R.id.textView_Like);
+//        mFansNum = view.findViewById(R.id.textViewFans);
+//        mTransmit = view.findViewById(R.id.textViewTransmit);
         mName = view.findViewById(R.id.textViewName);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         init();
@@ -105,7 +106,31 @@ public class MessageFragment extends Fragment {
 //    }
 
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onResume() {
+        StateObserve instance=StateObserve.getInstance();
+        instance.setInFriend(true);
+        getFriend();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        StateObserve instance=StateObserve.getInstance();
+        instance.setInFriend(false);
+        Log.d(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
         private void init () {
 
             retrofit = RetrofitManager.getRetrofit();
@@ -114,12 +139,12 @@ public class MessageFragment extends Fragment {
             observe();
             getFriend();
 
-            mLikeNum.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myviewModel.addLikeNum();
-                }
-            });
+//            mLikeNum.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    myviewModel.addLikeNum();
+//                }
+//            });
 
         }
 //
@@ -131,8 +156,7 @@ public class MessageFragment extends Fragment {
                 @Override
                 public void onResponse(Call<FriendRespose> call, Response<FriendRespose> response) {
 
-//               System.out.println("response.body().getData()----------->"+data.toString());
-                    FriendViewModel.getmData().setValue(response.body().getData());
+                    friendViewModel.getmData().setValue(response.body().getData());
                 }
 
                 @Override
@@ -144,13 +168,17 @@ public class MessageFragment extends Fragment {
 
         private void observe () {
             DataManagerObserve instance = DataManagerObserve.getInstance();
+            StateObserve stateObserve =StateObserve.getInstance();
             instance.addUpdateListener(new UpdateListener() {
                 @Override
                 public void update(boolean b) {
-                    if (instance.getIsHavingUpdate() == true) {
-                        instance.setHavingUpdate(false);
-                        getFriend();
+                    if (stateObserve.isInFriend()) {
+                        if (instance.getIsHavingUpdate() == true) {
+                            instance.setHavingUpdate(false);
+                            getFriend();
+                        }
                     }
+
                 }
             });
             instance.operation();
@@ -161,31 +189,31 @@ public class MessageFragment extends Fragment {
                     mName.setText(s);
                 }
             });
-            myviewModel.getLikeNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer integer) {
-                    mLikeNum.setText(String.valueOf(integer));
-                }
-            });
-            myviewModel.getCollectNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer integer) {
-                    mCollectNum.setText(String.valueOf(integer));
-                }
-            });
-            myviewModel.getFansNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer integer) {
-                    mFansNum.setText(String.valueOf(integer));
-                }
-            });
-            myviewModel.getTransmitNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer integer) {
-                    mTransmit.setText(String.valueOf(integer));
-                }
-            });
-            FriendViewModel.getmData().observe(getViewLifecycleOwner(), new Observer<List<FriendRespose.DataBean>>() {
+//            myviewModel.getLikeNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//                @Override
+//                public void onChanged(Integer integer) {
+//                    mLikeNum.setText(String.valueOf(integer));
+//                }
+//            });
+//            myviewModel.getCollectNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//                @Override
+//                public void onChanged(Integer integer) {
+//                    mCollectNum.setText(String.valueOf(integer));
+//                }
+//            });
+//            myviewModel.getFansNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//                @Override
+//                public void onChanged(Integer integer) {
+//                    mFansNum.setText(String.valueOf(integer));
+//                }
+//            });
+//            myviewModel.getTransmitNum().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//                @Override
+//                public void onChanged(Integer integer) {
+//                    mTransmit.setText(String.valueOf(integer));
+//                }
+//            });
+            friendViewModel.getmData().observe(getViewLifecycleOwner(), new Observer<List<FriendRespose.DataBean>>() {
                 @Override
                 public void onChanged(List<FriendRespose.DataBean> dataBeans) {
 

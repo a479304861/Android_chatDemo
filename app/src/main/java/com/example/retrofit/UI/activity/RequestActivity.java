@@ -169,19 +169,23 @@ public class RequestActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     Log.d(TAG, response.body().toString());
-                    if (response.body().isSucceed() == true) {
+                    if (response.body().isSucceed()) {
                         if (myviewmodel.getIsLoad().getValue() == false) {
                             myviewmodel.getIsLoad().setValue(true);
                             isConneting = false;
+                            myviewmodel.getId().setValue(response.body().getData().get(0).getId());
                             myviewmodel.getName().setValue(response.body().getData().get(0).getName());
-                            myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
-                            myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
-                            myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
-                            myviewmodel.getName().setValue(response.body().getData().get(0).getName());
+//                            myviewmodel.getLikeNum().setValue(response.body().getData().get(0).getLikeNum());
+//                            myviewmodel.getCollectNum().setValue(response.body().getData().get(0).getCollectNum());
+//                            myviewmodel.getFansNum().setValue(response.body().getData().get(0).getFansNum());
+//                            myviewmodel.getTransmitNum().setValue(response.body().getData().get(0).getTransmitNum());
                             Intent intent = new Intent(view.getContext(), UiActivity.class);
                             startActivity(intent);
                         }
 
+                    }
+                    else {
+                        Toast.makeText(RequestActivity.this, "账号已存在", Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
@@ -208,7 +212,7 @@ public class RequestActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
 //                        Log.d(TAG, response.body().toString());
-                        if (response.body().isSucceed() == true) {
+                        if (response.body().isSucceed()) {
                             if (myviewmodel.getIsLoad().getValue() == false) {
                                 myviewmodel.getIsLoad().setValue(true);
                                 isConneting = false;

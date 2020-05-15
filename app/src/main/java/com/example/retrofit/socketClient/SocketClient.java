@@ -77,11 +77,7 @@ public class SocketClient {
                 @Override
                 public void call(Object... args) {
                     JSONObject obj = (JSONObject)args[0];
-                    try {
-                        System.out.println("reNewMessage-------------->"+obj.get("code"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.println("reNewMessage-------------->");
                     try {
                         if (obj.getString("code").equals("3")){
                             DataManagerObserve instance = DataManagerObserve.getInstance();

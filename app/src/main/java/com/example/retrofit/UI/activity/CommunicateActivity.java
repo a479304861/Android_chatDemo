@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.retrofit.Interface.Api;
 import com.example.retrofit.Interface.DataManagerObserve;
+import com.example.retrofit.Interface.StateObserve;
 import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.R;
 import com.example.retrofit.UI.adapter.MessageAdapter;
@@ -93,17 +94,28 @@ public class CommunicateActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
-        DataManagerObserve instance = DataManagerObserve.getInstance();
-        getMeasure(instance.getNowFriend());
+        StateObserve instance=StateObserve.getInstance();
+        DataManagerObserve dataManagerObserve = DataManagerObserve.getInstance();
+        instance.setInMessage(true);
+        getMeasure(dataManagerObserve.getNowFriend());
         super.onResume();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        StateObserve instance=StateObserve.getInstance();
+
+        instance.setInMessage(false);
+        super.onPause();
     }
 
     private void getMeasure(int data) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", String.valueOf(myviewmodel.getId().getValue()));
         params.put("receiveId", data);
-        System.out.println(params);
+//        System.out.println(params);
         Call<MessageRespose> messuage = api.getMessage(params);
         messuage.enqueue(new Callback<MessageRespose>() {
             @Override
@@ -248,14 +260,19 @@ public class CommunicateActivity extends AppCompatActivity {
 //        });
 
         DataManagerObserve instance = DataManagerObserve.getInstance();
+        StateObserve instance1 = StateObserve.getInstance();
         instance.addUpdateListener(new UpdateListener() {
             @Override
             public void update(boolean b) {
-                if (instance.getisHavingMessage()==true) {
-                    instance.setHavingMessage(false);
-                    Log.d(TAG, "update: "+instance.getNowFriend());
-                    getMeasure(instance.getNowFriend());
+//                Log.d(TAG, "communicateActivity: ");
+                if (instance1.isInMessage()) {
+                    if (instance.getisHavingMessage()) {
+                        instance.setHavingMessage(false);
+                        Log.d(TAG, "update: "+instance.getNowFriend());
+                        getMeasure(instance.getNowFriend());
+                    }
                 }
+
             }
         });
         instance.operation();

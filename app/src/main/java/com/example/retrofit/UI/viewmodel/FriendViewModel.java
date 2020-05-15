@@ -14,7 +14,6 @@ public class FriendViewModel extends ViewModel {
     public static MutableLiveData<List<FriendRespose.DataBean>> getmData() {
         if (mData == null) {
             mData = new MutableLiveData<>();
-            mData.setValue(null);
         }
         return mData;
     }

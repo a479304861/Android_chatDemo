@@ -52,8 +52,8 @@ public class DataManagerObserve extends  AbstractSubject{
     }
     @Override
     public void operation() {
-        System.out.println("isHavingUpdate——————>" + isHavingUpdate);
-        System.out.println("isHavingUpdate——————>" + isHavingMessage);
+//        System.out.println("isHavingUpdate——————>" + isHavingUpdate);
+//        System.out.println("isHavingUpdate——————>" + isHavingMessage);
         notifyAllUpdateListener(isHavingUpdate);
         notifyAllUpdateListener(isHavingMessage);
         try {

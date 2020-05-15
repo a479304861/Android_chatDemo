@@ -77,7 +77,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.InnerHolde
         //
         public void setData(FriendRespose.DataBean dataBean) {
             if (dataBean.getIsOnline().equals("1")) {
-                isOnline.setText("在线");
+                isOnline.setText("在线      :");
             }
             else isOnline.setText("离线请留言      :");
             friendName.setText(dataBean.getName());
