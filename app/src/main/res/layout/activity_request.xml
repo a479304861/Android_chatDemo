@@ -74,7 +74,7 @@
         android:background="#00000000"
         android:onClick="socket"
         android:text="Socket"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

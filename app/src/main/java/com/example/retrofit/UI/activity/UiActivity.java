@@ -61,7 +61,7 @@ public class UiActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode== KeyEvent.KEYCODE_BACK){
             if((System.currentTimeMillis()-exitTime)>2000){
-                Toast.makeText(UiActivity.this,"Retry and Exit()",Toast.LENGTH_SHORT).show();
+                Toast.makeText(UiActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
                 exitTime=System.currentTimeMillis();
             }else{
                 System.exit(0);

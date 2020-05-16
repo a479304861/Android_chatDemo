@@ -12,10 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomActionBarTheme"
+
         android:usesCleartextTraffic="true">
         <activity android:name=".UI.activity.AddFriendActivity"></activity>
         <activity
             android:name=".UI.activity.CommunicateActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity android:name=".UI.activity.PicketActivity" />
         <activity android:name=".UI.activity.UiActivity" />
