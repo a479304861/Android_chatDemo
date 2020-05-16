@@ -7,20 +7,20 @@
 
     <application
         android:allowBackup="true"
-
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomActionBarTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".UI.activity.CommunicateActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-             />
+        <activity android:name=".UI.activity.AddFriendActivity"></activity>
+        <activity
+            android:name=".UI.activity.CommunicateActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity android:name=".UI.activity.PicketActivity" />
         <activity android:name=".UI.activity.UiActivity" />
-        <activity android:name=".UI.activity.RequestActivity"
+        <activity
+            android:name=".UI.activity.RequestActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

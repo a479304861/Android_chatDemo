@@ -49,7 +49,7 @@ public  class SocketTest {
         }
         @Override
         public void run() {
-            Log.d(TAG, "send msg--->"+this.msg);
+                Log.d(TAG, "send msg--->"+this.msg);
             printWriter.println(this.msg);
         }
     }
@@ -71,12 +71,13 @@ public  class SocketTest {
         public void run() {
             try {
                 System.out.println("连接服务器中");
-                socket = new Socket(StaticUtils.SOCKET_URL, StaticUtils.PORT);
+//                socket = new Socket(StaticUtils.SOCKET_URL, StaticUtils.PORT);
+                socket=new Socket("47.93.232.127",7777);
                 socket.setSoTimeout(40000);
                 printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(   //步骤二
                         socket.getOutputStream(), "UTF-8")), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-                mExecutorService.execute(new SendService("img1"));
+                mExecutorService.execute(new SendService("1"));
                 receiveMsg();
             } catch (Exception e) {
                 Log.e(TAG, ("connectService:" + e.getMessage()));   //如果Socket对象获取失败，即连接建立失败，会走到这段逻辑

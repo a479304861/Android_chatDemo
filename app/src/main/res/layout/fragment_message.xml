@@ -37,7 +37,7 @@
             android:text="搜索" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/fragment_messageButtonAddFriend"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

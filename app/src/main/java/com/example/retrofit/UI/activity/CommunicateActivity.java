@@ -106,7 +106,6 @@ public class CommunicateActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         StateObserve instance=StateObserve.getInstance();
-
         instance.setInMessage(false);
         super.onPause();
     }

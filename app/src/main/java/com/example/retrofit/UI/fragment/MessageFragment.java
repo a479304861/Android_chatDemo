@@ -1,5 +1,6 @@
 package com.example.retrofit.UI.fragment;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ import com.example.retrofit.Interface.DataManagerObserve;
 import com.example.retrofit.Interface.StateObserve;
 import com.example.retrofit.Interface.UpdateListener;
 import com.example.retrofit.R;
+import com.example.retrofit.UI.activity.AddFriendActivity;
+import com.example.retrofit.UI.activity.CommunicateActivity;
 import com.example.retrofit.UI.activity.RequestActivity;
 import com.example.retrofit.UI.adapter.FriendAdapter;
 import com.example.retrofit.UI.viewmodel.FriendViewModel;
@@ -60,6 +64,7 @@ public class MessageFragment extends Fragment {
     TextView mCollectNum, mLikeNum, mFansNum, mTransmit, mName;
     private static RecyclerView mRecyclerView;
     private static FriendViewModel friendViewModel;
+    private Button mButtonAddFriend;
 
     public MessageFragment() {
         // Required empty public constructor
@@ -78,6 +83,7 @@ public class MessageFragment extends Fragment {
 //        mFansNum = view.findViewById(R.id.textViewFans);
 //        mTransmit = view.findViewById(R.id.textViewTransmit);
         mName = view.findViewById(R.id.textViewName);
+        mButtonAddFriend =view.findViewById(R.id.fragment_messageButtonAddFriend);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         init();
         return view;
@@ -122,17 +128,19 @@ public class MessageFragment extends Fragment {
         super.onPause();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: ");
-    }
+
 
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
         private void init () {
-
+            mButtonAddFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), AddFriendActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
             retrofit = RetrofitManager.getRetrofit();
             api = retrofit.create(Api.class);
             myviewModel = RequestActivity.getMyviewmodel();

@@ -52,6 +52,8 @@ public interface Api {
     @GET("/postfile")
     Call<BaseRespose> postfile(@Part MultipartBody.Part part);
 
+    @GET("/selectFriend")
+    Call<FriendRespose> selectFriend(@QueryMap Map<String, Object> params);
 
 
 
